@@ -1093,8 +1093,7 @@ class RoleService {
       .from("user_courses")
       .select(
         `
-        user_id,
-        users (
+        users!inner (
           id,
           email,
           first_name,
@@ -1116,7 +1115,8 @@ class RoleService {
       .eq("status", "active");
 
     if (error) throw error;
-    return data?.map((item) => item.users).filter(Boolean) || [];
+    return (data?.map((item: any) => item.users).filter(Boolean) ||
+      []) as User[];
   }
 
   async addUserToCourse(
@@ -1180,9 +1180,7 @@ class RoleService {
       .from("course_instructors")
       .select(
         `
-        instructor_id,
-        role,
-        users (
+        users!inner (
           id,
           email,
           first_name,
@@ -1203,7 +1201,8 @@ class RoleService {
       .eq("course_id", courseId);
 
     if (error) throw error;
-    return data?.map((item) => item.users).filter(Boolean) || [];
+    return (data?.map((item: any) => item.users).filter(Boolean) ||
+      []) as User[];
   }
 }
 
