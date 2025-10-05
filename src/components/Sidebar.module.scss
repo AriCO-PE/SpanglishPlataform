@@ -127,3 +127,48 @@
     color: #d97706;
     font-weight: 600;
 }
+
+// Estilo
+s para la sección de administración .sectionTitle {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1rem;
+    margin: 0.5rem 0;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: #6b7280;
+    background: linear-gradient(135deg, #fef3c7, #fed7aa);
+    border-radius: 0.5rem;
+    border: 1px solid #f59e0b;
+
+    .sectionIcon {
+        font-size: 0.875rem;
+    }
+
+    .sectionText {
+        flex: 1;
+    }
+}
+
+.adminItem {
+    background: linear-gradient(135deg, rgba(251, 191, 36, 0.1), rgba(245, 158, 11, 0.1));
+    border-left: 3px solid #f59e0b;
+
+    &:hover {
+        background: linear-gradient(135deg, rgba(251, 191, 36, 0.2), rgba(245, 158, 11, 0.2));
+        border-left-color: #d97706;
+    }
+
+    &.active {
+        background: linear-gradient(135deg, #fef3c7, #fed7aa);
+        border-left-color: #92400e;
+        color: #92400e;
+
+        .icon {
+            color: #d97706;
+        }
+    }
+}

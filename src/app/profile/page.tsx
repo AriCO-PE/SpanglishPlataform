@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import Sidebar from "@/components/Sidebar";
 import PageLayout from "@/components/PageLayout";
 import AuthGuard from "@/components/AuthGuard";
-import LoadingSpinner from "@/components/LoadingSpinner";
+
 import { roleService } from "@/services/roleService";
 import styles from "./profile.module.scss";
 import { supabase } from "@/lib/supabase";
@@ -83,7 +83,8 @@ export default function Profile() {
         <div className={styles.profileContainer}>
           {loading && (
             <div className={styles.loadingState}>
-              <LoadingSpinner size="large" text="Cargando perfil..." />
+              <div className={styles.loadingSpinner}></div>
+              <p className={styles.loadingText}>Cargando perfil...</p>
             </div>
           )}
 

@@ -1,8 +1,8 @@
 "use client";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import LoadingSpinner from "./LoadingSpinner";
 import { supabase } from "@/lib/supabase";
+import styles from "./AuthGuard.module.scss";
 interface AuthGuardProps {
   children: React.ReactNode;
   requireAuth?: boolean;
@@ -80,52 +80,27 @@ const AuthGuard: React.FC<AuthGuardProps> = ({
 
   if (isLoading) {
     return (
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          minHeight: "100vh",
-          background:
-            "linear-gradient(135deg, #ffffff 0%, #f8f9fa 50%, #f1f3f4 100%)",
-        }}
-      >
-        <LoadingSpinner size="large" text="Verificando autenticación..." />
+      <div className={styles.loadingContainer}>
+        <div className={styles.loadingContent}>
+          <div className={styles.spinner}></div>
+          <p className={styles.loadingText}>Verificando autenticación...</p>
+        </div>
       </div>
     );
   }
 
   if (requireAuth && !isAuthenticated) {
     return (
-      <div
-        style={{
-          display: "flex",
-          flexDirection: "column",
-          justifyContent: "center",
-          alignItems: "center",
-          minHeight: "100vh",
-          background:
-            "linear-gradient(135deg, #ffffff 0%, #f8f9fa 50%, #f1f3f4 100%)",
-          textAlign: "center",
-          padding: "20px",
-        }}
-      >
-        <div
-          style={{
-            background: "#ffffff",
-            padding: "40px",
-            borderRadius: "20px",
-            boxShadow: "0 20px 60px rgba(0, 0, 0, 0.1)",
-            border: "1px solid #e5e7eb",
-          }}
-        >
-          <h2 style={{ color: "#000000", marginBottom: "16px" }}>
-            Acceso Restringido
-          </h2>
-          <p style={{ color: "#374151", marginBottom: "24px" }}>
+      <div className={styles.restrictedContainer}>
+        <div className={styles.restrictedCard}>
+          <h2 className={styles.restrictedTitle}>Acceso Restringido</h2>
+          <p className={styles.restrictedMessage}>
             Necesitas iniciar sesión para acceder a esta página.
           </p>
-          <LoadingSpinner size="medium" text="Redirigiendo al login..." />
+          <div className={styles.redirectingContent}>
+            <div className={styles.spinner}></div>
+            <p className={styles.loadingText}>Redirigiendo al login...</p>
+          </div>
         </div>
       </div>
     );
