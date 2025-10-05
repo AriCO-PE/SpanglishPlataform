@@ -1075,6 +1075,136 @@ class RoleService {
 
     if (error) throw error;
   }
+
+  // Gestión de miembros del curso
+  async getAllUsers(): Promise<User[]> {
+    const { data, error } = await supabase
+      .from("users")
+      .select("*")
+      .eq("is_active", true)
+      .order("first_name", { ascending: true });
+
+    if (error) throw error;
+    return data || [];
+  }
+
+  async getCourseMembers(courseId: string): Promise<User[]> {
+    const { data, error } = await supabase
+      .from("user_courses")
+      .select(
+        `
+        user_id,
+        users (
+          id,
+          email,
+          first_name,
+          last_name,
+          role,
+          specialty,
+          aura,
+          courses_completed,
+          hours_studied,
+          bio,
+          profile_image_url,
+          is_active,
+          created_at,
+          updated_at
+        )
+      `
+      )
+      .eq("course_id", courseId)
+      .eq("status", "active");
+
+    if (error) throw error;
+    return data?.map((item) => item.users).filter(Boolean) || [];
+  }
+
+  async addUserToCourse(
+    userId: string,
+    courseId: string,
+    enrolledBy: string
+  ): Promise<void> {
+    // Verificar si ya está inscrito
+    const { data: existing } = await supabase
+      .from("user_courses")
+      .select("id")
+      .eq("user_id", userId)
+      .eq("course_id", courseId)
+      .single();
+
+    if (existing) {
+      throw new Error("El usuario ya está inscrito en este curso");
+    }
+
+    const { error } = await supabase.from("user_courses").insert({
+      user_id: userId,
+      course_id: courseId,
+      enrolled_by: enrolledBy,
+      status: "active",
+    });
+
+    if (error) throw error;
+
+    // Actualizar contador de estudiantes del curso
+    await this.updateCourseStudentCount(courseId);
+  }
+
+  async removeUserFromCourse(userId: string, courseId: string): Promise<void> {
+    const { error } = await supabase
+      .from("user_courses")
+      .update({ status: "withdrawn" })
+      .eq("user_id", userId)
+      .eq("course_id", courseId);
+
+    if (error) throw error;
+
+    // Actualizar contador de estudiantes del curso
+    await this.updateCourseStudentCount(courseId);
+  }
+
+  private async updateCourseStudentCount(courseId: string): Promise<void> {
+    const { count } = await supabase
+      .from("user_courses")
+      .select("*", { count: "exact", head: true })
+      .eq("course_id", courseId)
+      .eq("status", "active");
+
+    await supabase
+      .from("courses")
+      .update({ current_students: count || 0 })
+      .eq("id", courseId);
+  }
+
+  async getCourseInstructors(courseId: string): Promise<User[]> {
+    const { data, error } = await supabase
+      .from("course_instructors")
+      .select(
+        `
+        instructor_id,
+        role,
+        users (
+          id,
+          email,
+          first_name,
+          last_name,
+          role,
+          specialty,
+          aura,
+          courses_completed,
+          hours_studied,
+          bio,
+          profile_image_url,
+          is_active,
+          created_at,
+          updated_at
+        )
+      `
+      )
+      .eq("course_id", courseId);
+
+    if (error) throw error;
+    return data?.map((item) => item.users).filter(Boolean) || [];
+  }
 }
 
 export const roleService = new RoleService();

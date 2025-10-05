@@ -9,6 +9,7 @@ import { roleService, Course, CourseWeek, User } from "@/services/roleService";
 import styles from "./course.module.scss";
 import ConfirmModal from "@/components/ConfirmModal";
 import Toast from "@/components/Toast";
+import CourseMembers from "@/components/CourseMembers";
 
 export default function CoursePage() {
   const params = useParams();
@@ -31,6 +32,9 @@ export default function CoursePage() {
     message: string;
     type: "success" | "error" | "warning" | "info";
   }>({ isOpen: false, message: "", type: "success" });
+  const [activeTab, setActiveTab] = useState<"overview" | "members">(
+    "overview"
+  );
 
   const canEdit = () => {
     if (!currentUser || !course) return false;
@@ -244,158 +248,192 @@ export default function CoursePage() {
             </div>
           </div>
 
-          {/* Semanas del Curso */}
-          <div className={styles.weeksSection}>
-            <div className={styles.sectionHeader}>
-              <h2>📅 Semanas del Curso</h2>
-              {canEdit() && weeks.length < 4 && (
+          {/* Pestañas de Navegación */}
+          <div className={styles.tabsContainer}>
+            <div className={styles.tabsHeader}>
+              <nav className={styles.tabsNav}>
                 <button
-                  onClick={handleCreateWeek}
-                  className={styles.createButton}
+                  onClick={() => setActiveTab("overview")}
+                  className={`${styles.tab} ${
+                    activeTab === "overview" ? styles.active : ""
+                  }`}
                 >
-                  ➕ Crear Semana
+                  📊 Resumen del Curso
                 </button>
-              )}
-            </div>
-
-            {weeks.length >= 4 ? (
-              <div className={styles.completeBadge}>
-                ✅ Módulo completo: Has alcanzado el máximo de 4 semanas
-              </div>
-            ) : (
-              canEdit() &&
-              weeks.length > 0 && (
-                <div className={styles.suggestionBadge}>
-                  💡 Puedes agregar {4 - weeks.length} semanas más para
-                  completar este módulo
-                </div>
-              )
-            )}
-
-            {weeks.length === 0 ? (
-              <div className={styles.emptyState}>
-                <div className={styles.emptyIcon}>📚</div>
-                <h3>No hay semanas creadas</h3>
-                <p>
-                  {canEdit()
-                    ? "Comienza creando la primera semana del curso"
-                    : "El instructor aún no ha creado contenido para este curso"}
-                </p>
                 {canEdit() && (
+                  <button
+                    onClick={() => setActiveTab("members")}
+                    className={`${styles.tab} ${
+                      activeTab === "members" ? styles.active : ""
+                    }`}
+                  >
+                    👥 Miembros
+                  </button>
+                )}
+              </nav>
+            </div>
+          </div>
+
+          {/* Contenido de las Pestañas */}
+          {activeTab === "overview" && (
+            <div className={styles.weeksSection}>
+              <div className={styles.sectionHeader}>
+                <h2>📅 Semanas del Curso</h2>
+                {canEdit() && weeks.length < 4 && (
                   <button
                     onClick={handleCreateWeek}
                     className={styles.createButton}
                   >
-                    ➕ Crear Primera Semana
+                    ➕ Crear Semana
                   </button>
                 )}
               </div>
-            ) : (
-              <div className={styles.weeksGrid}>
-                {weeks.map((week) => (
-                  <div
-                    key={week.id}
-                    className={`${styles.weekCard} ${
-                      week.is_locked && currentUser?.role === "student"
-                        ? styles.locked
-                        : ""
-                    }`}
-                  >
-                    {/* Botón X para eliminar semana */}
-                    {canEdit() && (
-                      <button
-                        onClick={() =>
-                          handleDeleteWeek(week.id, week.week_number)
-                        }
-                        className={styles.deleteButton}
-                        title="Eliminar semana"
-                      >
-                        ✕
-                      </button>
-                    )}
 
-                    <div className={styles.weekCardContent}>
-                      <div className={styles.weekMainContent}>
-                        <div className={styles.weekHeader}>
-                          <span className={styles.weekBadge}>
-                            SEMANA {week.week_number}
-                          </span>
-                          <h3 className={styles.weekTitle}>{week.title}</h3>
-                          {week.is_locked &&
-                            currentUser?.role === "student" && (
-                              <span className={styles.lockedBadge}>
-                                🔒 Bloqueada
-                              </span>
-                            )}
+              {weeks.length >= 4 ? (
+                <div className={styles.completeBadge}>
+                  ✅ Módulo completo: Has alcanzado el máximo de 4 semanas
+                </div>
+              ) : (
+                canEdit() &&
+                weeks.length > 0 && (
+                  <div className={styles.suggestionBadge}>
+                    💡 Puedes agregar {4 - weeks.length} semanas más para
+                    completar este módulo
+                  </div>
+                )
+              )}
+
+              {weeks.length === 0 ? (
+                <div className={styles.emptyState}>
+                  <div className={styles.emptyIcon}>📚</div>
+                  <h3>No hay semanas creadas</h3>
+                  <p>
+                    {canEdit()
+                      ? "Comienza creando la primera semana del curso"
+                      : "El instructor aún no ha creado contenido para este curso"}
+                  </p>
+                  {canEdit() && (
+                    <button
+                      onClick={handleCreateWeek}
+                      className={styles.createButton}
+                    >
+                      ➕ Crear Primera Semana
+                    </button>
+                  )}
+                </div>
+              ) : (
+                <div className={styles.weeksGrid}>
+                  {weeks.map((week) => (
+                    <div
+                      key={week.id}
+                      className={`${styles.weekCard} ${
+                        week.is_locked && currentUser?.role === "student"
+                          ? styles.locked
+                          : ""
+                      }`}
+                    >
+                      {/* Botón X para eliminar semana */}
+                      {canEdit() && (
+                        <button
+                          onClick={() =>
+                            handleDeleteWeek(week.id, week.week_number)
+                          }
+                          className={styles.deleteButton}
+                          title="Eliminar semana"
+                        >
+                          ✕
+                        </button>
+                      )}
+
+                      <div className={styles.weekCardContent}>
+                        <div className={styles.weekMainContent}>
+                          <div className={styles.weekHeader}>
+                            <span className={styles.weekBadge}>
+                              SEMANA {week.week_number}
+                            </span>
+                            <h3 className={styles.weekTitle}>{week.title}</h3>
+                            {week.is_locked &&
+                              currentUser?.role === "student" && (
+                                <span className={styles.lockedBadge}>
+                                  🔒 Bloqueada
+                                </span>
+                              )}
+                          </div>
+
+                          <p className={styles.weekDescription}>
+                            {week.description}
+                          </p>
+
+                          {week.objectives && week.objectives.length > 0 && (
+                            <div className={styles.objectivesList}>
+                              <div className={styles.objectivesLabel}>
+                                🎯 Objetivos:
+                              </div>
+                              <ul>
+                                {week.objectives.slice(0, 2).map((obj, idx) => (
+                                  <li key={idx}>
+                                    <span className="bullet">•</span>
+                                    {obj}
+                                  </li>
+                                ))}
+                                {week.objectives.length > 2 && (
+                                  <li className={styles.moreObjectives}>
+                                    +{week.objectives.length - 2} objetivos
+                                    más...
+                                  </li>
+                                )}
+                              </ul>
+                            </div>
+                          )}
                         </div>
 
-                        <p className={styles.weekDescription}>
-                          {week.description}
-                        </p>
-
-                        {week.objectives && week.objectives.length > 0 && (
-                          <div className={styles.objectivesList}>
-                            <div className={styles.objectivesLabel}>
-                              🎯 Objetivos:
-                            </div>
-                            <ul>
-                              {week.objectives.slice(0, 2).map((obj, idx) => (
-                                <li key={idx}>
-                                  <span className="bullet">•</span>
-                                  {obj}
-                                </li>
-                              ))}
-                              {week.objectives.length > 2 && (
-                                <li className={styles.moreObjectives}>
-                                  +{week.objectives.length - 2} objetivos más...
-                                </li>
-                              )}
-                            </ul>
-                          </div>
-                        )}
-                      </div>
-
-                      <div className={styles.weekActions}>
-                        {(!week.is_locked ||
-                          currentUser?.role !== "student") && (
-                          <button
-                            onClick={() =>
-                              router.push(
-                                `/courses/${courseId}/week/${week.id}`
-                              )
-                            }
-                            className={`${styles.actionButton} ${styles.primary}`}
-                          >
-                            {currentUser?.role === "student"
-                              ? "📖 Entrar"
-                              : "📚 Gestionar"}
-                          </button>
-                        )}
+                        <div className={styles.weekActions}>
+                          {(!week.is_locked ||
+                            currentUser?.role !== "student") && (
+                            <button
+                              onClick={() =>
+                                router.push(
+                                  `/courses/${courseId}/week/${week.id}`
+                                )
+                              }
+                              className={`${styles.actionButton} ${styles.primary}`}
+                            >
+                              {currentUser?.role === "student"
+                                ? "📖 Entrar"
+                                : "📚 Gestionar"}
+                            </button>
+                          )}
+                        </div>
                       </div>
                     </div>
-                  </div>
-                ))}
-              </div>
-            )}
+                  ))}
+                </div>
+              )}
 
-            {/* Barra de progreso */}
-            {weeks.length > 0 && (
-              <div className={styles.progressSection}>
-                <div className={styles.progressHeader}>
-                  <span>Progreso del Curso</span>
-                  <span className={styles.progressText}>
-                    {weeks.length}/4 semanas
-                  </span>
+              {/* Barra de progreso */}
+              {weeks.length > 0 && (
+                <div className={styles.progressSection}>
+                  <div className={styles.progressHeader}>
+                    <span>Progreso del Curso</span>
+                    <span className={styles.progressText}>
+                      {weeks.length}/4 semanas
+                    </span>
+                  </div>
+                  <div className={styles.progressBar}>
+                    <div
+                      className={styles.progressFill}
+                      style={{ width: `${(weeks.length / 4) * 100}%` }}
+                    ></div>
+                  </div>
                 </div>
-                <div className={styles.progressBar}>
-                  <div
-                    className={styles.progressFill}
-                    style={{ width: `${(weeks.length / 4) * 100}%` }}
-                  ></div>
-                </div>
-              </div>
-            )}
-          </div>
+              )}
+            </div>
+          )}
+
+          {/* Pestaña de Miembros */}
+          {activeTab === "members" && canEdit() && (
+            <CourseMembers courseId={courseId} currentUser={currentUser!} />
+          )}
         </div>
 
         {/* Modal de Edición de Curso */}

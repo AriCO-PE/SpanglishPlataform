@@ -900,3 +900,75 @@ Botón X para eliminar semana .deleteButton {
     font-weight: bold;
     margin-right: 0.5rem;
 }
+
+/ / Estilos para las pestañas .tabsContainer {
+    margin-bottom: 2rem;
+}
+
+.tabsHeader {
+    border-bottom: 2px solid #e5e7eb;
+    background: #f8fafc;
+    border-radius: 0.5rem 0.5rem 0 0;
+}
+
+.tabsNav {
+    display: flex;
+    gap: 0;
+    padding: 0 1rem;
+}
+
+.tab {
+    padding: 1rem 1.5rem;
+    border: none;
+    background: none;
+    border-bottom: 3px solid transparent;
+    font-weight: 600;
+    font-size: 0.875rem;
+    color: #6b7280;
+    cursor: pointer;
+    transition: all 0.2s;
+    position: relative;
+    white-space: nowrap;
+
+    &:hover {
+        color: #374151;
+        background: rgba(59, 130, 246, 0.05);
+    }
+
+    &.active {
+        border-bottom-color: #3b82f6;
+        color: #2563eb;
+        background: white;
+
+        &::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+            border-radius: 2px 2px 0 0;
+        }
+    }
+}
+
+// Responsive para pestañas
+@media (max-width: 768px) {
+    .tabsNav {
+        padding: 0 0.5rem;
+        overflow-x: auto;
+        scrollbar-width: none;
+        -ms-overflow-style: none;
+
+        &::-webkit-scrollbar {
+            display: none;
+        }
+    }
+
+    .tab {
+        padding: 0.75rem 1rem;
+        font-size: 0.8125rem;
+        min-width: max-content;
+    }
+}
