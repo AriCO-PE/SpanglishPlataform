@@ -4,7 +4,6 @@ import Image from "next/image";
 import Link from "next/link";
 import { useOptimizedNavigation } from "@/hooks/useOptimizedNavigation";
 import { supabase } from "@/lib/supabase";
-import GuestGuard from "@/components/GuestGuard";
 import styles from "./register.module.scss";
 
 function RegisterForm() {
@@ -246,9 +245,5 @@ function RegisterForm() {
   );
 }
 export default function Register() {
-  return (
-    <GuestGuard>
-      <RegisterForm />
-    </GuestGuard>
-  );
+  return <RegisterForm />;
 }

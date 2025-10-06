@@ -672,3 +672,144 @@
         box-shadow: 0 4px 15px $shadow-light;
     }
 }
+
+//
+Tarjetas de redirección para páginas de administración .redirectCard {
+    background: white;
+    border-radius: 1rem;
+    padding: 2rem;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+    border: 2px solid #e5e7eb;
+    text-align: center;
+    transition: all 0.2s;
+
+    &:hover {
+        border-color: #3b82f6;
+        box-shadow: 0 8px 25px rgba(59, 130, 246, 0.15);
+        transform: translateY(-2px);
+    }
+
+    h3 {
+        font-size: 1.25rem;
+        font-weight: 700;
+        color: #1f2937;
+        margin-bottom: 0.5rem;
+    }
+
+    p {
+        color: #6b7280;
+        margin-bottom: 1.5rem;
+        line-height: 1.5;
+    }
+}
+
+.redirectButton {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+    color: white;
+    padding: 0.75rem 1.5rem;
+    border-radius: 0.5rem;
+    text-decoration: none;
+    font-weight: 600;
+    transition: all 0.2s;
+    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+
+    &:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 6px 20px rgba(59, 130, 246, 0.4);
+        text-decoration: none;
+        color: white;
+    }
+}
+
+// Estados de carga y error 
+.loadingContainer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 16rem;
+}
+
+.loadingText {
+    font-size: 1.125rem;
+    color: #6b7280;
+}
+
+.errorContainer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 16rem;
+}
+
+.errorText {
+    font-size: 1.125rem;
+    color: #dc2626;
+}
+
+// Badge de rol
+.roleBadgeContainer {
+    margin-bottom: 1rem;
+}
+
+.roleBadge {
+    display: inline-block;
+    padding: 0.25rem 0.75rem;
+    border-radius: 9999px;
+    font-size: 0.875rem;
+    font-weight: 500;
+
+    &.adminBadge {
+        background: #fef2f2;
+        color: #dc2626;
+    }
+
+    &.teacherBadge {
+        background: #eff6ff;
+        color: #2563eb;
+    }
+
+    &.studentBadge {
+        background: #f0fdf4;
+        color: #16a34a;
+    }
+}
+
+// Pestañas
+.tabsContainer {
+    margin-bottom: 1.5rem;
+}
+
+.tabsHeader {
+    border-bottom: 1px solid #e5e7eb;
+}
+
+.tabsNav {
+    display: flex;
+    gap: 2rem;
+    margin-bottom: -1px;
+}
+
+.tab {
+    padding: 0.5rem 0.25rem;
+    border: none;
+    background: none;
+    border-bottom: 2px solid transparent;
+    font-weight: 500;
+    font-size: 0.875rem;
+    color: #6b7280;
+    cursor: pointer;
+    transition: all 0.2s;
+
+    &:hover {
+        color: #374151;
+        border-bottom-color: #d1d5db;
+    }
+
+    &.active {
+        border-bottom-color: #3b82f6;
+        color: #2563eb;
+    }
+}

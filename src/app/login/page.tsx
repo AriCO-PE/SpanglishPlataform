@@ -5,7 +5,6 @@ import Image from "next/image";
 import Link from "next/link";
 import { roleService } from "@/services/roleService";
 import { supabase } from "@/lib/supabase";
-import GuestGuard from "@/components/GuestGuard";
 import styles from "./login.module.scss";
 
 function LoginForm() {
@@ -159,10 +158,8 @@ function LoginForm() {
 
 export default function Login() {
   return (
-    <GuestGuard>
-      <Suspense fallback={<div>Loading...</div>}>
-        <LoginForm />
-      </Suspense>
-    </GuestGuard>
+    <Suspense fallback={<div>Loading...</div>}>
+      <LoginForm />
+    </Suspense>
   );
 }

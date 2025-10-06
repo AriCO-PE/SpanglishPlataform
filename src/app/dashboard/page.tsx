@@ -4,8 +4,7 @@ import Sidebar from "@/components/Sidebar";
 import React, { useEffect, useState } from "react";
 import AuthGuard from "@/components/AuthGuard";
 import { roleService, User } from "@/services/roleService";
-import RoleManager from "@/components/RoleManager";
-import CourseManager from "@/components/CourseManager";
+
 import styles from "./dashboard.module.scss";
 import PageLayout from "@/components/PageLayout";
 
@@ -36,8 +35,8 @@ export default function Dashboard() {
       <AuthGuard>
         <Sidebar />
         <PageLayout title="Cargando...">
-          <div className="flex items-center justify-center h-64">
-            <div className="text-lg">Cargando...</div>
+          <div className={styles.loadingContainer}>
+            <div className={styles.loadingText}>Cargando...</div>
           </div>
         </PageLayout>
       </AuthGuard>
@@ -49,8 +48,8 @@ export default function Dashboard() {
       <AuthGuard>
         <Sidebar />
         <PageLayout title="Error">
-          <div className="flex items-center justify-center h-64">
-            <div className="text-lg text-red-600">Error al cargar usuario</div>
+          <div className={styles.errorContainer}>
+            <div className={styles.errorText}>Error al cargar usuario</div>
           </div>
         </PageLayout>
       </AuthGuard>
@@ -71,14 +70,14 @@ export default function Dashboard() {
               {currentUser.role === "student" &&
                 "Continúa tu camino de aprendizaje donde lo dejaste"}
             </p>
-            <div className="mb-4">
+            <div className={styles.roleBadgeContainer}>
               <span
-                className={`inline-block px-3 py-1 rounded-full text-sm font-medium ${
+                className={`${styles.roleBadge} ${
                   currentUser.role === "admin"
-                    ? "bg-red-100 text-red-800"
+                    ? styles.adminBadge
                     : currentUser.role === "teacher"
-                    ? "bg-blue-100 text-blue-800"
-                    : "bg-green-100 text-green-800"
+                    ? styles.teacherBadge
+                    : styles.studentBadge
                 }`}
               >
                 {currentUser.role === "admin"
@@ -92,25 +91,21 @@ export default function Dashboard() {
 
           {/* Navigation tabs for admin and teachers */}
           {["admin", "teacher"].includes(currentUser.role) && (
-            <div className="mb-6">
-              <div className="border-b border-gray-200">
-                <nav className="-mb-px flex space-x-8">
+            <div className={styles.tabsContainer}>
+              <div className={styles.tabsHeader}>
+                <nav className={styles.tabsNav}>
                   <button
                     onClick={() => setActiveTab("overview")}
-                    className={`py-2 px-1 border-b-2 font-medium text-sm ${
-                      activeTab === "overview"
-                        ? "border-blue-500 text-blue-600"
-                        : "border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300"
+                    className={`${styles.tab} ${
+                      activeTab === "overview" ? styles.active : ""
                     }`}
                   >
                     Resumen
                   </button>
                   <button
                     onClick={() => setActiveTab("courses")}
-                    className={`py-2 px-1 border-b-2 font-medium text-sm ${
-                      activeTab === "courses"
-                        ? "border-blue-500 text-blue-600"
-                        : "border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300"
+                    className={`${styles.tab} ${
+                      activeTab === "courses" ? styles.active : ""
                     }`}
                   >
                     Cursos
@@ -118,10 +113,8 @@ export default function Dashboard() {
                   {currentUser.role === "admin" && (
                     <button
                       onClick={() => setActiveTab("users")}
-                      className={`py-2 px-1 border-b-2 font-medium text-sm ${
-                        activeTab === "users"
-                          ? "border-blue-500 text-blue-600"
-                          : "border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300"
+                      className={`${styles.tab} ${
+                        activeTab === "users" ? styles.active : ""
                       }`}
                     >
                       Usuarios
@@ -135,11 +128,23 @@ export default function Dashboard() {
           {/* Content based on active tab */}
           {activeTab === "courses" &&
             ["admin", "teacher"].includes(currentUser.role) && (
-              <CourseManager currentUser={currentUser} />
+              <div className={styles.redirectCard}>
+                <h3>Gestión de Cursos</h3>
+                <p>Administra todos los cursos de la plataforma</p>
+                <a href="/admin/courses" className={styles.redirectButton}>
+                  Ir a Gestión de Cursos →
+                </a>
+              </div>
             )}
 
           {activeTab === "users" && currentUser.role === "admin" && (
-            <RoleManager currentUser={currentUser} />
+            <div className={styles.redirectCard}>
+              <h3>Gestión de Usuarios</h3>
+              <p>Administra roles y permisos de usuarios</p>
+              <a href="/admin/users" className={styles.redirectButton}>
+                Ir a Gestión de Usuarios →
+              </a>
+            </div>
           )}
 
           {activeTab === "overview" && (
