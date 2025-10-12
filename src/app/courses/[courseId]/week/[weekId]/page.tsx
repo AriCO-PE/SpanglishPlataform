@@ -1082,7 +1082,7 @@ const LessonCreateModal: React.FC<LessonCreateModalProps> = ({
   );
 };
 
-// Modal para crear tarea
+// Modal para crear tarea xD
 interface AssignmentCreateModalProps {
   onSave: (assignmentData: any) => void;
   onCancel: () => void;
