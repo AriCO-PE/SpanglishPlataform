@@ -21,7 +21,7 @@ interface UserProfile {
   telegram?: string;
   instagram?: string;
   bio?: string;
-  avatar_url?: string;
+  
 }
 
 export default function Profile() {
@@ -37,54 +37,56 @@ export default function Profile() {
   // LOAD CURRENT USER PROFILE
   // ---------------------------
   useEffect(() => {
-    const loadProfile = async () => {
-      try {
-        const { data: { session } } = await supabase.auth.getSession();
+  const loadProfile = async () => {
+    try {
+      const { data: { session } } = await supabase.auth.getSession();
 
-        if (!session) {
-          setError("Debes iniciar sesión para ver tu perfil.");
-          setLoading(false);
-          return;
-        }
-
-        const profileData = await roleService.getCurrentUser();
-        if (!profileData) return;
-
-        // Traer todos los usuarios para calcular ranking
-        const { data: usersData } = await supabase
-          .from("users")
-          .select("id, aura")
-          .order("aura", { ascending: false });
-
-        const userIndex = usersData?.findIndex(u => u.id === session.user.id);
-        const userRank = userIndex !== undefined && userIndex !== -1 ? userIndex + 1 : null;
-
-        setUser({
-          first_name: profileData.first_name,
-          last_name: profileData.last_name,
-          email: profileData.email,
-          aura: profileData.aura,
-          ranking: userRank,
-          courses_completed: profileData.courses_completed,
-          hours_studied: profileData.hours_studied,
-          member_since: profileData.created_at?.split("T")[0],
-          telegram: profileData.telegram,
-          instagram: profileData.instagram,
-          bio: profileData.bio,
-          avatar_url: profileData.avatar_url,
-        });
-
-        setError(null);
-      } catch (err) {
-        console.error("Error loading profile:", err);
-        setError("Error al cargar el perfil. Por favor, inicia sesión nuevamente.");
-      } finally {
+      if (!session) {
+        setError("Debes iniciar sesión para ver tu perfil.");
         setLoading(false);
+        return;
       }
-    };
 
-    loadProfile();
-  }, []);
+      const profileData = await roleService.getCurrentUser();
+      if (!profileData) return;
+
+      // Traer todos los usuarios para calcular ranking
+      const { data: usersData } = await supabase
+        .from("users")
+        .select("id, aura")
+        .order("aura", { ascending: false });
+
+      const userIndex = usersData?.findIndex(u => u.id === session.user.id);
+      const userRank = userIndex !== undefined && userIndex !== -1 ? userIndex + 1 : undefined;
+
+ setUser({
+  first_name: profileData.first_name,
+  last_name: profileData.last_name,
+  email: profileData.email,
+  aura: profileData.aura,
+  ranking: userRank ?? undefined,
+  courses_completed: profileData.courses_completed,
+  hours_studied: profileData.hours_studied,
+  member_since: profileData.created_at?.split("T")[0],
+  telegram: (profileData as any).telegram, // <- cast temporal
+  instagram: (profileData as any).instagram,
+  bio: profileData.bio,
+});
+
+
+
+      setError(null);
+    } catch (err) {
+      console.error(err);
+      setError("Error al cargar el perfil.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  loadProfile();
+}, []);
+
 
   // ---------------------------
   // SAVE PROFILE CHANGES
@@ -165,13 +167,6 @@ export default function Profile() {
             <>
               <div className={styles.profileCard}>
                 <div className={styles.profileHeader}>
-                  <div className={styles.profileAvatar}>
-                    {user.avatar_url ? (
-                      <img src={user.avatar_url} alt="Avatar" />
-                    ) : (
-                      <div className={styles.placeholderAvatar}></div>
-                    )}
-                  </div>
 
                   <div className={styles.profileInfo}>
                     <h2>{user.first_name} {user.last_name}</h2>

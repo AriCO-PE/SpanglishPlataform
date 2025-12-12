@@ -6,6 +6,15 @@ import { usePathname } from "next/navigation";
 import { roleService, User } from "@/services/roleService";
 import styles from "./Sidebar.module.scss";
 
+// 🔹 Definir tipo para los items del sidebar
+interface SidebarItem {
+  name: string;
+  href: string;
+  icon?: React.ReactNode | string;
+  badge?: string | number;
+  target?: string;
+}
+
 const SidebarContent = () => {
   const pathname = usePathname();
   const [currentUser, setCurrentUser] = useState<User | null>(null);
@@ -22,27 +31,25 @@ const SidebarContent = () => {
     loadUser();
   }, []);
 
-  const menuItems = [
-    { name: "Dashboard",  href: "/dashboard",  },
-    { name: "Material",  href: "/courses" },
-    { name: "Ranking",href: "/ranking" },
-    { name: "Challenges",  href: "/grades" },
+  // 🔹 Menú principal
+  const menuItems: SidebarItem[] = [
+    { name: "Dashboard", href: "/dashboard", icon: "🏠" },
+    { name: "Material", href: "/courses", icon: "📚" },
+    { name: "Ranking", href: "/ranking", icon: "🏆" },
+    { name: "Challenges", href: "/grades", icon: "🎯" },
   ];
 
-  const adminItems = [
-    { name: "Gestión de Cursos",  href: "/admin/courses" },
-    { name: "Gestión de Usuarios", href: "/admin/users" },
+  // 🔹 Menú de administración (solo para admins)
+  const adminItems: SidebarItem[] = [
+    { name: "Gestión de Cursos", href: "/admin/courses", icon: "📘" },
+    { name: "Gestión de Usuarios", href: "/admin/users", icon: "👥" },
   ];
 
-  const sidebarItems = [
-    { name: "Profile",  href: "/profile" },
-    { name: "Tools",  href: "/tools" },
-    {
-      name: "Telegram",
-      
-      href: "https://t.me/SpanglishAcademyru",
-      target: "_blank",
-    },
+  // 🔹 Otros items del sidebar
+  const sidebarItems: SidebarItem[] = [
+    { name: "Profile", href: "/profile", icon: "👤" },
+    { name: "Tools", href: "/tools", icon: "🛠️" },
+    { name: "Telegram", href: "https://t.me/SpanglishAcademyru", icon: "💬", target: "_blank" },
   ];
 
   return (
@@ -60,17 +67,17 @@ const SidebarContent = () => {
         </Link>
       </div>
 
+      {/* Menú principal */}
       <nav className={styles.nav}>
         {menuItems.map((item, index) => (
           <Link
             key={index}
             href={item.href}
-            className={`${styles.navItem} ${
-              pathname === item.href ? styles.active : ""
-            }`}
+            target={item.target}
+            className={`${styles.navItem} ${pathname === item.href ? styles.active : ""}`}
             prefetch={true}
           >
-            <span className={styles.icon}>{item.icon}</span>
+            {item.icon && <span className={styles.icon}>{item.icon}</span>}
             <span className={styles.text}>{item.name}</span>
             {item.badge && <span className={styles.badge}>{item.badge}</span>}
           </Link>
@@ -91,12 +98,11 @@ const SidebarContent = () => {
               <Link
                 key={index}
                 href={item.href}
-                className={`${styles.navItem} ${styles.adminItem} ${
-                  pathname === item.href ? styles.active : ""
-                }`}
+                target={item.target}
+                className={`${styles.navItem} ${styles.adminItem} ${pathname === item.href ? styles.active : ""}`}
                 prefetch={true}
               >
-                <span className={styles.icon}>{item.icon}</span>
+                {item.icon && <span className={styles.icon}>{item.icon}</span>}
                 <span className={styles.text}>{item.name}</span>
               </Link>
             ))}
@@ -105,22 +111,21 @@ const SidebarContent = () => {
         </>
       )}
 
+      {/* Otros items del sidebar */}
       <nav className={styles.nav}>
         {sidebarItems.map((item, index) => (
           <Link
             key={index}
             href={item.href}
-            className={`${styles.navItem} ${
-              pathname === item.href ? styles.active : ""
-            }`}
+            target={item.target}
+            className={`${styles.navItem} ${pathname === item.href ? styles.active : ""}`}
             prefetch={true}
           >
-            <span className={styles.icon}>{item.icon}</span>
+            {item.icon && <span className={styles.icon}>{item.icon}</span>}
             <span className={styles.text}>{item.name}</span>
           </Link>
         ))}
       </nav>
-
     </div>
   );
 };
@@ -132,4 +137,5 @@ const Sidebar = () => {
     </Suspense>
   );
 };
+
 export default Sidebar;

@@ -13,11 +13,10 @@ export interface News {
 export const newsService = {
   getAll: async (): Promise<News[]> => {
     const { data, error } = await supabase
-      .from<News>("news")
-      .select("*")
-      .order("published_at", { ascending: false });
+      .from("news") // ✅ solo el nombre de la tabla aquí
+      .select("*") as { data: News[] | null; error: any }; // casteamos el resultado a News[]
 
     if (error) throw error;
-    return data;
+    return data || [];
   },
 };

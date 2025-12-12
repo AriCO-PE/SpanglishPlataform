@@ -39,42 +39,12 @@ export default function AdminUsersPage() {
     type: "success" | "error" | "warning" | "info";
   }>({ isOpen: false, message: "", type: "success" });
 
-  useEffect(() => {
-    checkPermissions();
-  }, []);
-
-  useEffect(() => {
-    if (currentUser) loadUsers();
-  }, [selectedRole, currentUser]);
-
-  // 🔹 Obtener el usuario actual
-  const checkPermissions = async () => {
-    const { data: { user }, error } = await supabase.auth.getUser();
-    if (error || !user) {
-      router.push("/dashboard");
-      return;
-    }
-
-    const { data: userData } = await supabase
-      .from<User>("users")
-      .select("*")
-      .eq("id", user.id)
-      .single();
-
-    if (!userData || userData.role !== "admin") {
-      router.push("/dashboard");
-      return;
-    }
-
-    setCurrentUser(userData);
-  };
-
   // 🔹 Cargar usuarios filtrando por rol
   const loadUsers = async () => {
     try {
       setLoading(true);
       const { data, error } = await supabase
-        .from<User>("users")
+        .from("users")
         .select("*")
         .eq("role", selectedRole)
         .order("created_at", { ascending: true });
@@ -88,6 +58,43 @@ export default function AdminUsersPage() {
       setLoading(false);
     }
   };
+
+  // 🔹 Obtener el usuario actual
+  const checkPermissions = async () => {
+    const { data: { user }, error } = await supabase.auth.getUser();
+    if (error || !user) {
+      router.push("/dashboard");
+      return;
+    }
+
+    const { data: userData, error: userError } = await supabase
+      .from("users")
+      .select("*")
+      .eq("id", user.id)
+      .single() as { data: User | null; error: any };
+
+    if (userError) {
+      console.error(userError);
+      router.push("/dashboard");
+      return;
+    }
+
+    if (!userData || userData.role !== "admin") {
+      router.push("/dashboard");
+      return;
+    }
+
+    setCurrentUser(userData);
+  };
+
+  // 🔹 useEffects
+  useEffect(() => {
+    checkPermissions();
+  }, []);
+
+  useEffect(() => {
+    if (currentUser) loadUsers();
+  }, [selectedRole, currentUser]);
 
   // 🔹 Cambiar rol de usuario
   const handleRoleChange = async (userId: string, newRole: UserRole) => {
@@ -155,9 +162,7 @@ export default function AdminUsersPage() {
           <div className={styles.header}>
             <div className={styles.headerInfo}>
               <h2 className={styles.title}>Gestión de Usuarios</h2>
-              <p className={styles.subtitle}>
-                Administra roles y permisos de usuarios
-              </p>
+              <p className={styles.subtitle}>Administra roles y permisos de usuarios</p>
             </div>
 
             <div className={styles.stats}>
@@ -176,7 +181,6 @@ export default function AdminUsersPage() {
 
           {error && <div className={styles.errorAlert}>{error}</div>}
 
-          {/* Role Filter */}
           <div className={styles.filterContainer}>
             <div className={styles.filterGroup}>
               <label className={styles.filterLabel}>Filtrar por rol:</label>
@@ -224,7 +228,6 @@ export default function AdminUsersPage() {
                     </div>
 
                     <div className={styles.userDetails}>
-                     
                       <div className={styles.detailItem}>
                         <span className={styles.detailLabel}>Horas estudiadas:</span>
                         <span className={styles.detailValue}>{user.hours_studied}h</span>
