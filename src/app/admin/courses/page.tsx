@@ -17,6 +17,9 @@ interface ChallengeSubmission {
     first_name: string;
     last_name: string;
     email: string;
+    aura: number;
+    hours_studied: number;
+    courses_completed: number;
   };
   challenges: {
     id: string;
@@ -25,6 +28,7 @@ interface ChallengeSubmission {
     hours: number;
   };
 }
+
 
 export default function AdminChallengesPage() {
   const [submissions, setSubmissions] = useState<ChallengeSubmission[]>([]);
