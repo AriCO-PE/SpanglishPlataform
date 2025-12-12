@@ -6,27 +6,31 @@ import PageLayout from "@/components/PageLayout";
 import AuthGuard from "@/components/AuthGuard";
 import styles from "./courses.module.scss";
 
+interface User {
+  id: string;
+  first_name: string;
+  last_name: string;
+  email: string;
+  aura: number;
+  hours_studied: number;
+  courses_completed: number;
+}
+
+interface Challenge {
+  id: string;
+  title: string;
+  points: number;
+  hours: number;
+}
+
 interface ChallengeSubmission {
   id: string;
   challenge_id: string;
   user_id: string;
   status: "pending" | "approved" | "rejected";
   created_at: string;
-  users: {
-    id: string;
-    first_name: string;
-    last_name: string;
-    email: string;
-    aura: number;
-    hours_studied: number;
-    courses_completed: number;
-  };
-  challenges: {
-    id: string;
-    title: string;
-    points: number;
-    hours: number;
-  };
+  users: User;
+  challenges: Challenge;
 }
 
 export default function AdminChallengesPage() {
