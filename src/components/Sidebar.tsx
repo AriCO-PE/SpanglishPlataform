@@ -23,24 +23,24 @@ const SidebarContent = () => {
   }, []);
 
   const menuItems = [
-    { name: "Inicio", icon: "📋", href: "/dashboard", badge: "NUEVO" },
-    { name: "Cursos", icon: "📖", href: "/courses" },
-    { name: "Clasificación", icon: "🏆", href: "/ranking" },
-    { name: "Notas", icon: "📊", href: "/grades" },
+    { name: "Dashboard",  href: "/dashboard",  },
+    { name: "Material",  href: "/courses" },
+    { name: "Ranking",href: "/ranking" },
+    { name: "Challenges",  href: "/grades" },
   ];
 
   const adminItems = [
-    { name: "Gestión de Cursos", icon: "📚", href: "/admin/courses" },
-    { name: "Gestión de Usuarios", icon: "👥", href: "/admin/users" },
+    { name: "Gestión de Cursos",  href: "/admin/courses" },
+    { name: "Gestión de Usuarios", href: "/admin/users" },
   ];
 
   const sidebarItems = [
-    { name: "Perfil", icon: "👤", href: "/profile" },
-    { name: "Herramientas", icon: "🔧", href: "/tools" },
+    { name: "Profile",  href: "/profile" },
+    { name: "Tools",  href: "/tools" },
     {
-      name: "Discord",
-      icon: "🎮",
-      href: "https://discord.gg/b8xxX6sy",
+      name: "Telegram",
+      
+      href: "https://t.me/SpanglishAcademyru",
       target: "_blank",
     },
   ];
@@ -50,13 +50,13 @@ const SidebarContent = () => {
       <div className={styles.header}>
         <Link href="/" className={styles.logo}>
           <Image
-            src="/af.png"
+            src="/span.jpeg"
             alt="After Life Academy"
             width={40}
             height={40}
             className={styles.logoImage}
           />
-          <span className={styles.logoText}>AFTER LIFE ACADEMY</span>
+          <span className={styles.logoText}>SPANGLISH ACADEMY</span>
         </Link>
       </div>
 
@@ -121,12 +121,6 @@ const SidebarContent = () => {
         ))}
       </nav>
 
-      <div className={styles.footer}>
-        <div className={styles.referralSection}>
-          <span className={styles.referralIcon}>🎁</span>
-          <span className={styles.referralText}>Referir a un amigo</span>
-        </div>
-      </div>
     </div>
   );
 };

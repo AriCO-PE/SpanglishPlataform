@@ -221,3 +221,82 @@
         font-size: 12px;
     }
 }
+
+
+.headerRight {
+  position: relative; // NECESARIO para que el dropdown se posicione abajo del botón
+  overflow: visible !important; // EVITA que se esconda el menú
+  z-index: 50;
+}
+
+.newsDropdown {
+  position: absolute;
+  top: 45px;
+  right: 0;
+
+  width: 280px;
+
+  background: rgba(20, 20, 20, 0.96);
+  backdrop-filter: blur(12px);
+
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 12px;
+
+  padding: 0.75rem;
+
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.3);
+
+  z-index: 9999; // se asegura de que aparezca
+
+  max-height: 350px;
+  overflow-y: auto;
+
+  animation: fadeDown 0.15s ease-out;
+}
+
+@keyframes fadeDown {
+  from { opacity: 0; transform: translateY(-8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.newsItem {
+  padding: 0.6rem 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+
+  h4 {
+    font-size: 0.9rem;
+    margin: 0 0 0.2rem;
+    color: #fff;
+  }
+
+  p {
+    font-size: 0.8rem;
+    margin: 0;
+    color: #cfcfcf;
+  }
+
+  a {
+    font-size: 0.75rem;
+    color: #4da6ff;
+    text-decoration: none;
+  }
+
+  &:last-child {
+    border-bottom: none;
+  }
+}
+
+.notificationBtn {
+  position: relative;
+}
+
+.notificationDot {
+  position: absolute;
+  top: -2px;
+  right: -2px;
+  width: 8px;
+  height: 8px;
+  background: #ff4a4a;
+  border-radius: 50%;
+}
+

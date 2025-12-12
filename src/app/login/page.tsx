@@ -64,13 +64,13 @@ function LoginForm() {
       <div className={styles.loginCard}>
         <div className={styles.logoSection}>
           <Image
-            src="/af.png"
+            src="/span.jpeg"
             alt="After Life Academy"
             width={60}
             height={60}
             className={styles.logo}
           />
-          <h1>After Life Academy</h1>
+          <h1>Spanglish Academy</h1>
           <p>Inicia sesión en tu cuenta</p>
         </div>
 
@@ -108,49 +108,12 @@ function LoginForm() {
             />
           </div>
 
-          <div className={styles.formOptions}>
-            <label className={styles.checkbox}>
-              <input type="checkbox" />
-              <span>Recordarme</span>
-            </label>
-            <Link href="/forgot-password" className={styles.forgotLink}>
-              ¿Olvidaste tu contraseña?
-            </Link>
-          </div>
-
           <button type="submit" className={styles.loginBtn} disabled={loading}>
             {loading ? "Cargando..." : "Iniciar Sesión"}
           </button>
         </form>
+    
 
-        <div className={styles.demoCredentials}>
-          <h4>Credenciales de Prueba:</h4>
-          <div className={styles.credentialsList}>
-            <div className={styles.credentialItem}>
-              <strong>Estudiante:</strong> student@test.com
-            </div>
-            <div className={styles.credentialItem}>
-              <strong>Profesor:</strong> teacher@test.com
-            </div>
-            <div className={styles.credentialItem}>
-              <strong>Admin:</strong> admin@test.com
-            </div>
-            <div className={styles.credentialItem}>
-              <strong>Contraseña:</strong> password123
-            </div>
-          </div>
-        </div>
-
-        <div className={styles.divider}>
-          <span>o</span>
-        </div>
-
-        <div className={styles.registerSection}>
-          <p>¿No tienes una cuenta?</p>
-          <Link href="/register" className={styles.registerLink}>
-            Crear cuenta
-          </Link>
-        </div>
       </div>
     </div>
   );

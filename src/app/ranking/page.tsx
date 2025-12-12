@@ -8,14 +8,13 @@ import AuthGuard from "@/components/AuthGuard";
 import { supabase } from "@/lib/supabase";
 import styles from "./ranking.module.scss";
 
-// Tipado del usuario en el ranking
+// Tipado del usuario
 interface UserRank {
   id: string;
   first_name: string;
   last_name: string;
-  specialty?: string;
   aura: number;
-  rank: number;
+  rank?: number;
 }
 
 export default function Ranking() {
@@ -35,54 +34,53 @@ export default function Ranking() {
 
   const fetchRanking = async (searchTerm: string) => {
     try {
-      // Get ranking from user_rankings view
-      let query = supabase.from("user_rankings").select("*").order("rank");
+      let { data: usersData, error } = await supabase
+        .from("users")
+        .select("id, first_name, last_name, aura");
 
+      if (error) throw error;
+      if (!usersData) usersData = [];
+
+      // Filtrar por búsqueda
       if (searchTerm) {
-        query = query.or(
-          `first_name.ilike.%${searchTerm}%,last_name.ilike.%${searchTerm}%`
+        usersData = usersData.filter((user) =>
+          `${user.first_name} ${user.last_name}`
+            .toLowerCase()
+            .includes(searchTerm.toLowerCase())
         );
       }
 
-      const { data: rankingData, error } = await query;
+      // Ordenar por aura descendente y calcular rank
+      const ranked = usersData
+        .sort((a, b) => b.aura - a.aura)
+        .map((user, index) => ({ ...user, rank: index + 1 }));
 
-      if (error) throw error;
+      setRanking(ranked);
 
-      setRanking(rankingData || []);
-
-      // Get current user's rank
+      // Obtener ranking del usuario actual
       const {
         data: { session },
       } = await supabase.auth.getSession();
+
       if (session) {
-        const currentUserRank = rankingData?.find(
+        const currentUserRank = ranked.find(
           (user) => user.id === session.user.id
         );
         setUserRank(currentUserRank || null);
       }
-    } catch (err) {
-      console.error(err);
-      // Fallback to empty data
+    } catch (err: any) {
+      console.error("Error fetching ranking:", err.message || err);
       setRanking([]);
       setUserRank(null);
     }
   };
 
-  // Debounced version de fetchRanking
   const debouncedFetch = useCallback(debounce(fetchRanking, 400), []);
 
   useEffect(() => {
     debouncedFetch(search);
   }, [search, debouncedFetch]);
 
-  // Filtrado local de ranking
-  const filteredRanking = ranking.filter((user) =>
-    `${user.first_name} ${user.last_name}`
-      .toLowerCase()
-      .includes(search.toLowerCase())
-  );
-
-  // Redirige al perfil del usuario
   const goToProfile = (userId: string) => {
     router.push(`/profile/${userId}`);
   };
@@ -99,14 +97,9 @@ export default function Ranking() {
                 <span className={styles.userName}>
                   {userRank.first_name} {userRank.last_name}
                 </span>
-                <span className={styles.userSpecialty}>
-                  {userRank.specialty || "No definida"}
-                </span>
                 <div className={styles.rankDisplay}>
                   <span className={styles.rankNumber}>#{userRank.rank}</span>
-                  <span className={styles.rankPoints}>
-                    {userRank.aura} aura
-                  </span>
+                  <span className={styles.rankPoints}>{userRank.aura} aura</span>
                 </div>
               </div>
             </div>
@@ -124,13 +117,11 @@ export default function Ranking() {
           <div className={styles.leaderboard}>
             <h3>Global Leaderboard</h3>
             <div className={styles.leaderboardList}>
-              {filteredRanking.map((user) => (
+              {ranking.map((user) => (
                 <div
                   key={user.id}
                   className={`${styles.leaderboardItem} ${
-                    userRank && user.id === userRank.id
-                      ? styles.currentUser
-                      : ""
+                    userRank && user.id === userRank.id ? styles.currentUser : ""
                   }`}
                   onClick={() => goToProfile(user.id)}
                   style={{ cursor: "pointer" }}

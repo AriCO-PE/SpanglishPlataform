@@ -1,0 +1,244 @@
+/* Filters container */
+.filters {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-bottom: 2rem;
+}
+
+/* Search input */
+.filters input[type="text"] {
+  padding: 0.85rem 1.2rem;
+  border-radius: 12px;
+  border: 1px solid #ddd;
+  font-size: 1rem;
+  width: 220px;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+  background-color: #fff;
+  color: #111;
+
+  &:focus {
+    border-color: #111;
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.1);
+  }
+}
+
+/* Select dropdowns */
+.filters select {
+  padding: 0.85rem 1.2rem;
+  border-radius: 12px;
+  border: 1px solid #ddd;
+  background: #fff;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  min-width: 160px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+  color: #111;
+
+  &:hover {
+    border-color: #111;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+  }
+
+  &:focus {
+    border-color: #111;
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.1);
+  }
+}
+
+/* Tag-style buttons for categories & difficulties */
+.filterTag {
+  padding: 0.65rem 1rem;
+  border-radius: 9999px; /* pill shape */
+  border: 1px solid #111;
+  background: #fff;
+  color: #111;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  user-select: none;
+
+  &:hover {
+    background: #111;
+    color: #fff;
+  }
+
+  &.active {
+    background: #111;
+    color: #fff;
+  }
+}
+
+
+
+/* Container for the books */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr); // Siempre 3 columnas
+  gap: 1.5rem;
+  padding: 1rem;
+  max-width: 1200px; // Limita el ancho total de la grid
+  margin: 0 auto; // Centra la grid
+}
+
+
+/* Book card */
+.card {
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+
+  &:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+  }
+
+  .coverImage {
+    width: 100%;
+    height: 300px; // Más alto que antes
+    object-fit: cover;
+    background: #eee;
+  }
+
+  .placeholder {
+    width: 100%;
+    height: 300px; // Igual que coverImage
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #eee;
+    color: #888;
+    font-size: 0.9rem;
+  }
+
+  .cardContent {
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+    flex-grow: 1; 
+
+    .title {
+      font-size: 1.2rem;
+      font-weight: 600;
+      margin: 0;
+    }
+
+    .author, .category, .level, .description {
+      font-size: 0.9rem;
+      color: #555;
+      margin: 0;
+    }
+  }
+
+  .readBtn {
+    margin: 1rem;
+    padding: 0.5rem 1rem;
+    text-align: center;
+    background-color: #010101;
+    color: #fff;
+    border-radius: 8px;
+    font-weight: 500;
+    text-decoration: none;
+    transition: background 0.2s;
+    margin-top: auto; 
+    &:hover {
+      background-color: #5b5c5d;
+    }
+  }
+}
+
+/* ======================= */
+/*    FEATURED BOOK SECTION */
+/* ======================= */
+.featuredSection {
+  margin-bottom: 3rem;
+  display: flex;
+  justify-content: center;
+}
+
+.featuredCard {
+  display: flex;
+  flex-direction: row;
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+  overflow: hidden;
+  max-width: 900px;
+  width: 100%;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+
+  &:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+  }
+}
+
+.featuredImage {
+  width: 40%;
+  object-fit: cover;
+  height: 100%;
+  min-height: 300px;
+}
+
+.featuredContent {
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  flex: 1;
+
+  h2 {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+    color: #111;
+  }
+
+  p {
+    font-size: 1rem;
+    color: #555;
+    margin-bottom: 1.5rem;
+    line-height: 1.5;
+  }
+}
+
+.featuredBtn {
+  align-self: flex-start;
+  padding: 0.75rem 1.5rem;
+  background-color: #010101;
+  color: #fff;
+  border-radius: 10px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: background 0.2s;
+
+  &:hover {
+    background-color: #5b5c5d;
+  }
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .featuredCard {
+    flex-direction: column;
+  }
+
+  .featuredImage {
+    width: 100%;
+    min-height: 250px;
+  }
+
+  .featuredContent {
+    padding: 1.5rem;
+  }
+}
+

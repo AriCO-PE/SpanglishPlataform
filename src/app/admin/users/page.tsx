@@ -2,12 +2,29 @@
 
 import React, { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { roleService, User, UserRole } from "@/services/roleService";
 import AuthGuard from "@/components/AuthGuard";
 import Sidebar from "@/components/Sidebar";
 import PageLayout from "@/components/PageLayout";
 import Toast from "@/components/Toast";
+import { supabase } from "@/lib/supabase";
 import styles from "./users.module.scss";
+
+export type UserRole = "student" | "teacher" | "admin";
+
+export interface User {
+  id: string;
+  email: string;
+  first_name: string;
+  last_name: string;
+  role: UserRole;
+  aura: number;
+  courses_completed: number;
+  hours_studied: number;
+  specialty?: string;
+  profile_image_url?: string;
+  bio?: string;
+  created_at: string;
+}
 
 export default function AdminUsersPage() {
   const router = useRouter();
@@ -27,31 +44,43 @@ export default function AdminUsersPage() {
   }, []);
 
   useEffect(() => {
-    if (currentUser) {
-      loadUsers();
-    }
+    if (currentUser) loadUsers();
   }, [selectedRole, currentUser]);
 
+  // 🔹 Obtener el usuario actual
   const checkPermissions = async () => {
-    try {
-      const user = await roleService.getCurrentUser();
-      setCurrentUser(user);
-
-      if (!user || user.role !== "admin") {
-        router.push("/dashboard");
-        return;
-      }
-    } catch (error) {
-      console.error("Error checking permissions:", error);
+    const { data: { user }, error } = await supabase.auth.getUser();
+    if (error || !user) {
       router.push("/dashboard");
+      return;
     }
+
+    const { data: userData } = await supabase
+      .from<User>("users")
+      .select("*")
+      .eq("id", user.id)
+      .single();
+
+    if (!userData || userData.role !== "admin") {
+      router.push("/dashboard");
+      return;
+    }
+
+    setCurrentUser(userData);
   };
 
+  // 🔹 Cargar usuarios filtrando por rol
   const loadUsers = async () => {
     try {
       setLoading(true);
-      const usersData = await roleService.getUsersByRole(selectedRole);
-      setUsers(usersData);
+      const { data, error } = await supabase
+        .from<User>("users")
+        .select("*")
+        .eq("role", selectedRole)
+        .order("created_at", { ascending: true });
+
+      if (error) throw error;
+      setUsers(data || []);
     } catch (err) {
       setError("Error al cargar los usuarios");
       console.error(err);
@@ -60,10 +89,17 @@ export default function AdminUsersPage() {
     }
   };
 
+  // 🔹 Cambiar rol de usuario
   const handleRoleChange = async (userId: string, newRole: UserRole) => {
     try {
-      await roleService.updateUserRole(userId, newRole);
-      await loadUsers(); // Reload users
+      const { error } = await supabase
+        .from("users")
+        .update({ role: newRole })
+        .eq("id", userId);
+
+      if (error) throw error;
+
+      await loadUsers();
       setToast({
         isOpen: true,
         message: "Rol actualizado exitosamente",
@@ -109,9 +145,7 @@ export default function AdminUsersPage() {
     return `https://ui-avatars.com/api/?name=${firstName}+${lastName}&background=3b82f6&color=fff&size=60`;
   };
 
-  if (!currentUser || currentUser.role !== "admin") {
-    return null;
-  }
+  if (!currentUser || currentUser.role !== "admin") return null;
 
   return (
     <AuthGuard>
@@ -183,68 +217,38 @@ export default function AdminUsersPage() {
                         </h3>
                         <p className={styles.userEmail}>{user.email}</p>
                         <div className={styles.userStats}>
-                          <span className={styles.aura}>
-                            ⭐ {user.aura} aura
-                          </span>
-                          <span className={styles.courses}>
-                            📚 {user.courses_completed} cursos
-                          </span>
+                          <span className={styles.aura}>⭐ {user.aura} aura</span>
+                          <span className={styles.courses}>📚 {user.courses_completed} cursos</span>
                         </div>
                       </div>
                     </div>
 
                     <div className={styles.userDetails}>
+                     
                       <div className={styles.detailItem}>
-                        <span className={styles.detailLabel}>
-                          Especialidad:
-                        </span>
-                        <span className={styles.detailValue}>
-                          {user.specialty || "No especificada"}
-                        </span>
+                        <span className={styles.detailLabel}>Horas estudiadas:</span>
+                        <span className={styles.detailValue}>{user.hours_studied}h</span>
                       </div>
                       <div className={styles.detailItem}>
-                        <span className={styles.detailLabel}>
-                          Horas estudiadas:
-                        </span>
-                        <span className={styles.detailValue}>
-                          {user.hours_studied}h
-                        </span>
-                      </div>
-                      <div className={styles.detailItem}>
-                        <span className={styles.detailLabel}>
-                          Miembro desde:
-                        </span>
-                        <span className={styles.detailValue}>
-                          {new Date(user.created_at).toLocaleDateString()}
-                        </span>
+                        <span className={styles.detailLabel}>Miembro desde:</span>
+                        <span className={styles.detailValue}>{new Date(user.created_at).toLocaleDateString()}</span>
                       </div>
                     </div>
 
                     <div className={styles.userActions}>
                       <div className={styles.currentRole}>
                         <span className={styles.roleLabel}>Rol actual:</span>
-                        <span
-                          className={`${styles.roleBadge} ${getRoleBadgeClass(
-                            user.role
-                          )}`}
-                        >
+                        <span className={`${styles.roleBadge} ${getRoleBadgeClass(user.role)}`}>
                           {getRoleIcon(user.role)} {user.role}
                         </span>
                       </div>
 
                       {currentUser.id !== user.id && (
                         <div className={styles.roleActions}>
-                          <label className={styles.actionLabel}>
-                            Cambiar rol:
-                          </label>
+                          <label className={styles.actionLabel}>Cambiar rol:</label>
                           <select
                             value={user.role}
-                            onChange={(e) =>
-                              handleRoleChange(
-                                user.id,
-                                e.target.value as UserRole
-                              )
-                            }
+                            onChange={(e) => handleRoleChange(user.id, e.target.value as UserRole)}
                             className={styles.roleSelect}
                           >
                             <option value="student">👨‍🎓 Estudiante</option>

@@ -5,69 +5,79 @@ import PageLayout from "@/components/PageLayout";
 import AuthGuard from "@/components/AuthGuard";
 
 import { roleService } from "@/services/roleService";
-import styles from "./profile.module.scss";
 import { supabase } from "@/lib/supabase";
+import styles from "./profile.module.scss";
 
 interface UserProfile {
   first_name?: string;
   last_name?: string;
   email?: string;
   birthday?: string;
-  specialty?: string;
   aura?: number | string;
   ranking?: number | string;
   courses_completed?: number;
   hours_studied?: number;
   member_since?: string;
+  telegram?: string;
+  instagram?: string;
+  bio?: string;
+  avatar_url?: string;
 }
 
 export default function Profile() {
   const [user, setUser] = useState<UserProfile | null>(null);
   const [loading, setLoading] = useState(true);
+  const [saving, setSaving] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
+  const [isEditingBio, setIsEditingBio] = useState(false);
+  const [isEditingSocial, setIsEditingSocial] = useState(false);
+
+  // ---------------------------
+  // LOAD CURRENT USER PROFILE
+  // ---------------------------
   useEffect(() => {
     const loadProfile = async () => {
-      console.log("Loading profile...");
-
       try {
-        const {
-          data: { session },
-        } = await supabase.auth.getSession();
+        const { data: { session } } = await supabase.auth.getSession();
 
         if (!session) {
-          console.log("No session found, redirecting...");
           setError("Debes iniciar sesión para ver tu perfil.");
           setLoading(false);
           return;
         }
 
-        console.log("Session found, fetching profile for:", session.user.id);
         const profileData = await roleService.getCurrentUser();
-        console.log("Profile data received:", profileData);
+        if (!profileData) return;
 
-        if (profileData) {
-          setUser({
-            first_name: profileData.first_name,
-            last_name: profileData.last_name,
-            email: profileData.email,
-            specialty: profileData.specialty,
-            aura: profileData.aura,
-            ranking: 1, // We'll calculate this later
-            courses_completed: profileData.courses_completed,
-            hours_studied: profileData.hours_studied,
-            member_since:
-              profileData.created_at?.split("T")[0] ||
-              new Date().toISOString().split("T")[0],
-          });
-        }
+        // Traer todos los usuarios para calcular ranking
+        const { data: usersData } = await supabase
+          .from("users")
+          .select("id, aura")
+          .order("aura", { ascending: false });
+
+        const userIndex = usersData?.findIndex(u => u.id === session.user.id);
+        const userRank = userIndex !== undefined && userIndex !== -1 ? userIndex + 1 : null;
+
+        setUser({
+          first_name: profileData.first_name,
+          last_name: profileData.last_name,
+          email: profileData.email,
+          aura: profileData.aura,
+          ranking: userRank,
+          courses_completed: profileData.courses_completed,
+          hours_studied: profileData.hours_studied,
+          member_since: profileData.created_at?.split("T")[0],
+          telegram: profileData.telegram,
+          instagram: profileData.instagram,
+          bio: profileData.bio,
+          avatar_url: profileData.avatar_url,
+        });
+
         setError(null);
       } catch (err) {
-        console.error("Profile loading error:", err);
-        setError(
-          "Error al cargar el perfil. Por favor, inicia sesión nuevamente."
-        );
-        setUser(null);
+        console.error("Error loading profile:", err);
+        setError("Error al cargar el perfil. Por favor, inicia sesión nuevamente.");
       } finally {
         setLoading(false);
       }
@@ -76,56 +86,104 @@ export default function Profile() {
     loadProfile();
   }, []);
 
+  // ---------------------------
+  // SAVE PROFILE CHANGES
+  // ---------------------------
+  const handleSaveBio = async () => {
+    if (!user) return;
+    setSaving(true);
+    try {
+      const { data: { session } } = await supabase.auth.getSession();
+      if (!session) return alert("Debes iniciar sesión.");
+
+      await supabase
+        .from("users")
+        .update({ bio: user.bio, updated_at: new Date().toISOString() })
+        .eq("id", session.user.id);
+
+      setIsEditingBio(false);
+      alert("Bio actualizada correctamente.");
+    } catch (err) {
+      console.error("Error saving bio:", err);
+      alert("Error al guardar la bio.");
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  const handleSaveSocial = async () => {
+    if (!user) return;
+    setSaving(true);
+    try {
+      const { data: { session } } = await supabase.auth.getSession();
+      if (!session) return alert("Debes iniciar sesión.");
+
+      await supabase
+        .from("users")
+        .update({
+          instagram: user.instagram,
+          telegram: user.telegram,
+          updated_at: new Date().toISOString(),
+        })
+        .eq("id", session.user.id);
+
+      setIsEditingSocial(false);
+      alert("Redes sociales actualizadas correctamente.");
+    } catch (err) {
+      console.error("Error saving social:", err);
+      alert("Error al guardar las redes sociales.");
+    } finally {
+      setSaving(false);
+    }
+  };
+
   return (
     <AuthGuard>
       <Sidebar />
       <PageLayout title="Profile">
         <div className={styles.profileContainer}>
+          {/* LOADING */}
           {loading && (
             <div className={styles.loadingState}>
               <div className={styles.loadingSpinner}></div>
-              <p className={styles.loadingText}>Cargando perfil...</p>
+              <p>Cargando perfil...</p>
             </div>
           )}
 
+          {/* ERROR */}
           {error && (
             <div className={styles.errorState}>
               <p>{error}</p>
-              <button
-                className={styles.loginBtn}
-                onClick={() => (window.location.href = "/login")}
-              >
+              <button onClick={() => (window.location.href = "/login")}>
                 Ir a Iniciar Sesión
               </button>
             </div>
           )}
 
+          {/* CONTENT */}
           {user && !loading && !error && (
             <>
               <div className={styles.profileCard}>
                 <div className={styles.profileHeader}>
                   <div className={styles.profileAvatar}>
-                    <span>👤</span>
+                    {user.avatar_url ? (
+                      <img src={user.avatar_url} alt="Avatar" />
+                    ) : (
+                      <div className={styles.placeholderAvatar}></div>
+                    )}
                   </div>
+
                   <div className={styles.profileInfo}>
-                    <h2>
-                      {user.first_name} {user.last_name}
-                    </h2>
+                    <h2>{user.first_name} {user.last_name}</h2>
                     <p>{user.email}</p>
-                    <span className={styles.memberSince}>
-                      Member since {user.member_since}
-                    </span>
-                    <p>Especialidad: {user.specialty || "No definida"}</p>
-                    <p>Cumpleaños: {user.birthday || "No registrado"}</p>
+                    <span>Member since {user.member_since}</span>
                   </div>
                 </div>
 
                 <div className={styles.profileStats}>
                   <div className={styles.stat}>
-                    <span className={styles.statValue}>
-                      {user.courses_completed}
-                    </span>
-                    <span className={styles.statLabel}>Cursos Completados</span>
+                    <span className={styles.statValue}>{user.courses_completed}</span>
+                    <span className={styles.statLabel}>Retos Completados</span>
                   </div>
 
                   <div className={styles.stat}>
@@ -139,40 +197,91 @@ export default function Profile() {
                   </div>
 
                   <div className={styles.stat}>
-                    <span className={styles.statValue}>
-                      {user.hours_studied}
-                    </span>
+                    <span className={styles.statValue}>{user.hours_studied}</span>
                     <span className={styles.statLabel}>Horas Estudiadas</span>
                   </div>
                 </div>
               </div>
 
-              <div className={styles.settingsCard}>
-                <h3>Account Settings</h3>
-                <div className={styles.settingItem}>
-                  <span>Email Notifications</span>
-                  <button className={styles.toggleBtn}>Enabled</button>
-                </div>
-                <div className={styles.settingItem}>
-                  <span>Course Reminders</span>
-                  <button className={styles.toggleBtn}>Enabled</button>
-                </div>
-                <div className={styles.settingItem}>
-                  <span>Progress Reports</span>
-                  <button className={styles.toggleBtn}>Weekly</button>
+              {/* ---------------------- */}
+              {/* BIO */}
+              {/* ---------------------- */}
+              <div className={styles.bioCard}>
+                <h3>Bio</h3>
+                {isEditingBio ? (
+                  <textarea
+                    value={user.bio}
+                    onChange={(e) => setUser({ ...user, bio: e.target.value })}
+                    rows={4}
+                  />
+                ) : (
+                  <p>{user.bio || "Aún no has escrito una biografía."}</p>
+                )}
+                <br />
+                <button
+                  className={styles.editSaveButton}
+                  onClick={isEditingBio ? handleSaveBio : () => setIsEditingBio(true)}
+                >
+                  {isEditingBio ? "Guardar Bio" : "Editar Bio"}
+                </button>
+              </div>
+
+              {/* ---------------------- */}
+              {/* REDES SOCIALES */}
+              {/* ---------------------- */}
+              <div className={styles.socialCards}>
+                {/* INSTAGRAM */}
+                <div className={styles.socialCard + " " + styles.instagram}>
+                  <h4>Instagram</h4>
+                  {isEditingSocial ? (
+                    <input
+                      type="text"
+                      value={user.instagram}
+                      onChange={(e) => setUser({ ...user, instagram: e.target.value })}
+                    />
+                  ) : (
+                    <p>{user.instagram || "@sin_usuario"}</p>
+                  )}
+                  {user.instagram && !isEditingSocial && (
+                    <button
+                      onClick={() =>
+                        window.open(`https://instagram.com/${user.instagram}`, "_blank")
+                      }
+                    >
+                      Visitar
+                    </button>
+                  )}
                 </div>
 
-                <div className={styles.settingItem}>
-                  <button
-                    className={styles.logoutBtn}
-                    onClick={async () => {
-                      await supabase.auth.signOut();
-                      window.location.href = "/login";
-                    }}
-                  >
-                    Logout
-                  </button>
+                {/* TELEGRAM */}
+                <div className={styles.socialCard + " " + styles.telegram}>
+                  <h4>Telegram</h4>
+                  {isEditingSocial ? (
+                    <input
+                      type="text"
+                      value={user.telegram}
+                      onChange={(e) => setUser({ ...user, telegram: e.target.value })}
+                    />
+                  ) : (
+                    <p>{user.telegram || "@sin_usuario"}</p>
+                  )}
+                  {user.telegram && !isEditingSocial && (
+                    <button
+                      onClick={() => window.open(`https://t.me/${user.telegram}`, "_blank")}
+                    >
+                      Visitar
+                    </button>
+                  )}
                 </div>
+              </div>
+
+              <div className={styles.editSaveButtonContainer}>
+                <button
+                  className={styles.editSaveButton}
+                  onClick={isEditingSocial ? handleSaveSocial : () => setIsEditingSocial(true)}
+                >
+                  {isEditingSocial ? "Guardar Redes" : "Editar Redes"}
+                </button>
               </div>
             </>
           )}

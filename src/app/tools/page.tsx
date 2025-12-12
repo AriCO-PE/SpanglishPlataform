@@ -1,46 +1,56 @@
+
+'use client';
 import Sidebar from '@/components/Sidebar';
 import PageLayout from '@/components/PageLayout';
 import styles from './tools.module.scss';
 
 export default function Tools() {
   const tools = [
-    {
-      name: 'Code Editor',
-      description: 'Online IDE for practicing coding exercises',
-      icon: '💻',
-      status: 'Available'
-    },
-    {
-      name: 'Project Builder',
-      description: 'Create and manage your coding projects',
-      icon: '🏗️',
-      status: 'Available'
-    },
-    {
-      name: 'Code Reviewer',
-      description: 'Get feedback on your code submissions',
-      icon: '🔍',
-      status: 'Available'
-    },
-    {
-      name: 'Performance Tracker',
-      description: 'Monitor your learning progress and metrics',
-      icon: '📈',
-      status: 'Coming Soon'
-    },
-    {
-      name: 'Collaboration Hub',
-      description: 'Work together with other students on projects',
-      icon: '👥',
-      status: 'Coming Soon'
-    },
-    {
-      name: 'Resource Library',
-      description: 'Access documentation and learning materials',
-      icon: '📚',
-      status: 'Available'
-    },
-  ];
+  {
+    name: 'Duolingo',
+    description: 'Platform to learn Spanish in an interactive and fun way',
+    icon: '🟢',
+    status: 'Available',
+    link: 'https://www.duolingo.com/'
+  },
+  {
+    name: 'RAE Dictionary',
+    description: 'Official dictionary from the Royal Spanish Academy for definitions and spelling checks',
+    icon: '📖',
+    status: 'Available',
+    link: 'https://dle.rae.es/'
+  },
+  {
+    name: 'LingQ (Free content)',
+    description: 'Learn vocabulary and listening comprehension with Spanish texts and audio',
+    icon: '🎧',
+    status: 'Available',
+    link: 'https://www.lingq.com/es/'
+  },
+  {
+    name: 'SpanishDict',
+    description: 'Dictionary, verb conjugator, and translator from Spanish to other languages',
+    icon: '🔤',
+    status: 'Available',
+    link: 'https://www.spanishdict.com/'
+  },
+  {
+    name: 'Linguee',
+    description: 'Bilingual dictionary with usage examples and reliable translations',
+    icon: '📝',
+    status: 'Available',
+    link: 'https://www.linguee.com/'
+  },
+  {
+    name: 'Cervantes Virtual',
+    description: 'Digital library with free resources, books, and Spanish texts',
+    icon: '🏛️',
+    status: 'Available',
+    link: 'https://cvc.cervantes.es/'
+  },
+
+];
+
 
   return (
     <>
@@ -49,7 +59,7 @@ export default function Tools() {
         <div className={styles.toolsContainer}>
           <div className={styles.toolsHeader}>
             <h2>Learning Tools</h2>
-            <p>Enhance your learning experience with our development tools</p>
+            <p>Enhance your learning experience with our tools</p>
           </div>
 
           <div className={styles.toolsGrid}>
@@ -67,9 +77,9 @@ export default function Tools() {
                 </div>
                 <button 
                   className={styles.toolBtn}
-                  disabled={tool.status === 'Coming Soon'}
+                  onClick={() => window.open(tool.link, "_blank")}
                 >
-                  {tool.status === 'Coming Soon' ? 'Coming Soon' : 'Launch Tool'}
+                  Launch Tool
                 </button>
               </div>
             ))}
