@@ -29,7 +29,6 @@ interface ChallengeSubmission {
   };
 }
 
-
 export default function AdminChallengesPage() {
   const [submissions, setSubmissions] = useState<ChallengeSubmission[]>([]);
   const [loading, setLoading] = useState(true);
@@ -40,17 +39,18 @@ export default function AdminChallengesPage() {
 
   const fetchSubmissions = async () => {
     setLoading(true);
+
     const { data, error } = await supabase
       .from("challenge_submissions")
       .select(`
         *,
-        users(id, first_name, last_name, email),
+        users(id, first_name, last_name, email, aura, hours_studied, courses_completed),
         challenges(id, title, points, hours)
       `)
       .order("created_at", { ascending: false });
 
     if (error) console.error("Error fetching submissions:", error);
-    else setSubmissions(data);
+    else setSubmissions(data as ChallengeSubmission[]);
 
     setLoading(false);
   };
@@ -60,23 +60,25 @@ export default function AdminChallengesPage() {
     if (!submission) return;
 
     // Actualizar el submission a approved
-    const { error } = await supabase
+    const { error: approveError } = await supabase
       .from("challenge_submissions")
       .update({ status: "approved" })
       .eq("id", submissionId);
 
-    if (error) return alert("Error al aprobar la solicitud");
+    if (approveError) return alert("Error al aprobar la solicitud");
 
     // Actualizar los datos del usuario: aura, hours_studied, courses_completed
-    await supabase
+    const { error: userError } = await supabase
       .from("users")
       .update({
-        aura: submission.users?.aura + submission.challenges?.points,
+        aura: (submission.users?.aura || 0) + (submission.challenges?.points || 0),
         hours_studied:
-          submission.users?.hours_studied + submission.challenges?.hours,
-        courses_completed: submission.users?.courses_completed + 1,
+          (submission.users?.hours_studied || 0) + (submission.challenges?.hours || 0),
+        courses_completed: (submission.users?.courses_completed || 0) + 1,
       })
       .eq("id", submission.user_id);
+
+    if (userError) return alert("Error al actualizar datos del usuario");
 
     alert("Reto aprobado correctamente");
     fetchSubmissions();
