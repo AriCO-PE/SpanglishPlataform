@@ -106,3 +106,136 @@
         cursor: not-allowed;
     }
 }
+
+// -------------------
+// Responsive adicional para tools
+// -------------------
+@media (max-width: 1024px) {
+  .toolsContainer {
+    padding: 0 20px;
+  }
+
+  .toolsHeader {
+    h2 {
+      font-size: 22px;
+    }
+
+    p {
+      font-size: 13px;
+    }
+  }
+
+  .toolCard {
+    padding: 20px;
+  }
+
+  .toolIcon {
+    width: 50px;
+    height: 50px;
+    font-size: 20px;
+    margin-bottom: 16px;
+  }
+
+  .toolContent {
+    h3 {
+      font-size: 16px;
+    }
+
+    p {
+      font-size: 13px;
+      margin-bottom: 10px;
+    }
+  }
+
+  .toolBtn {
+    padding: 10px;
+    font-size: 13px;
+  }
+}
+
+@media (max-width: 768px) {
+  .toolsGrid {
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 16px;
+  }
+
+  .toolCard {
+    padding: 18px;
+  }
+
+  .toolIcon {
+    width: 48px;
+    height: 48px;
+    font-size: 18px;
+    margin-bottom: 14px;
+  }
+
+  .toolContent {
+    h3 {
+      font-size: 15px;
+    }
+
+    p {
+      font-size: 12px;
+      margin-bottom: 8px;
+    }
+  }
+
+  .toolBtn {
+    padding: 8px;
+    font-size: 12px;
+  }
+}
+
+@media (max-width: 480px) {
+  .toolsGrid {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  .toolsContainer {
+    padding: 0 12px;
+  }
+
+  .toolsHeader {
+    h2 {
+      font-size: 20px;
+    }
+
+    p {
+      font-size: 12px;
+    }
+  }
+
+  .toolCard {
+    padding: 16px;
+  }
+
+  .toolIcon {
+    width: 40px;
+    height: 40px;
+    font-size: 16px;
+    margin-bottom: 12px;
+  }
+
+  .toolContent {
+    h3 {
+      font-size: 14px;
+    }
+
+    p {
+      font-size: 11px;
+      margin-bottom: 6px;
+    }
+  }
+
+  .toolBtn {
+    padding: 6px;
+    font-size: 11px;
+  }
+
+  .toolStatus {
+    font-size: 9px;
+    padding: 3px 6px;
+  }
+}
