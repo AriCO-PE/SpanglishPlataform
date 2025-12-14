@@ -62,3 +62,91 @@
     }
   }
 }
+
+
+// -------------------
+// Responsive adicional para última sección de cards
+// -------------------
+@media (max-width: 1024px) {
+  .container {
+    padding: 1.8rem;
+  }
+
+  .header {
+    font-size: 1.8rem;
+    margin-bottom: 1.8rem;
+  }
+
+  .card .coverImage,
+  .card .placeholder {
+    height: 160px;
+  }
+
+  .cardContent .title {
+    font-size: 1.1rem;
+  }
+
+  .cardContent .genre,
+  .cardContent .description {
+    font-size: 0.85rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .container {
+    padding: 1.5rem;
+  }
+
+  .header {
+    font-size: 1.6rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .grid {
+    gap: 1.2rem;
+  }
+
+  .card .coverImage,
+  .card .placeholder {
+    height: 140px;
+  }
+
+  .cardContent .title {
+    font-size: 1rem;
+  }
+
+  .cardContent .genre,
+  .cardContent .description {
+    font-size: 0.8rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .container {
+    padding: 1rem;
+  }
+
+  .header {
+    font-size: 1.4rem;
+    margin-bottom: 1rem;
+  }
+
+  .grid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  .card .coverImage,
+  .card .placeholder {
+    height: 120px;
+  }
+
+  .cardContent .title {
+    font-size: 0.95rem;
+  }
+
+  .cardContent .genre,
+  .cardContent .description {
+    font-size: 0.75rem;
+  }
+}

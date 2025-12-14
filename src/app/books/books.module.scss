@@ -242,3 +242,182 @@
   }
 }
 
+// -------------------
+// Responsive adicional para books & filters
+// -------------------
+@media (max-width: 1024px) {
+  .filters {
+    gap: 0.8rem;
+  }
+
+  .filters input[type="text"],
+  .filters select {
+    width: 180px;
+    padding: 0.75rem 1rem;
+    font-size: 0.95rem;
+  }
+
+  .filterTag {
+    font-size: 0.85rem;
+    padding: 0.55rem 0.9rem;
+  }
+
+  .grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.2rem;
+    padding: 0.8rem;
+  }
+
+  .card .coverImage,
+  .card .placeholder {
+    height: 250px;
+  }
+
+  .cardContent .title {
+    font-size: 1.1rem;
+  }
+
+  .cardContent .author,
+  .cardContent .category,
+  .cardContent .level,
+  .cardContent .description {
+    font-size: 0.85rem;
+  }
+
+  .readBtn {
+    padding: 0.45rem 0.9rem;
+    font-size: 0.9rem;
+  }
+
+  .featuredCard {
+    max-width: 750px;
+  }
+
+  .featuredContent h2 {
+    font-size: 1.8rem;
+  }
+
+  .featuredContent p {
+    font-size: 0.95rem;
+  }
+
+  .featuredBtn {
+    padding: 0.65rem 1.2rem;
+    font-size: 0.95rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .filters {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.6rem;
+  }
+
+  .filters input[type="text"],
+  .filters select {
+    width: 100%;
+  }
+
+  .grid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+    padding: 0.5rem;
+  }
+
+  .card .coverImage,
+  .card .placeholder {
+    height: 200px;
+  }
+
+  .cardContent .title {
+    font-size: 1rem;
+  }
+
+  .cardContent .author,
+  .cardContent .category,
+  .cardContent .level,
+  .cardContent .description {
+    font-size: 0.8rem;
+  }
+
+  .readBtn {
+    padding: 0.4rem 0.8rem;
+    font-size: 0.85rem;
+  }
+
+  .featuredContent {
+    padding: 1rem;
+  }
+
+  .featuredContent h2 {
+    font-size: 1.6rem;
+  }
+
+  .featuredContent p {
+    font-size: 0.9rem;
+  }
+
+  .featuredBtn {
+    padding: 0.6rem 1rem;
+    font-size: 0.9rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .filters {
+    gap: 0.5rem;
+  }
+
+  .filterTag {
+    font-size: 0.8rem;
+    padding: 0.45rem 0.8rem;
+  }
+
+  .card .coverImage,
+  .card .placeholder {
+    height: 180px;
+  }
+
+  .cardContent .title {
+    font-size: 0.95rem;
+  }
+
+  .cardContent .author,
+  .cardContent .category,
+  .cardContent .level,
+  .cardContent .description {
+    font-size: 0.75rem;
+  }
+
+  .readBtn {
+    padding: 0.35rem 0.7rem;
+    font-size: 0.8rem;
+  }
+
+  .featuredCard {
+    flex-direction: column;
+  }
+
+  .featuredImage {
+    width: 100%;
+    min-height: 200px;
+  }
+
+  .featuredContent {
+    padding: 0.8rem 1rem;
+  }
+
+  .featuredContent h2 {
+    font-size: 1.4rem;
+  }
+
+  .featuredContent p {
+    font-size: 0.8rem;
+  }
+
+  .featuredBtn {
+    padding: 0.5rem 0.9rem;
+    font-size: 0.85rem;
+  }
+}
