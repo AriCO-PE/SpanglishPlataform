@@ -386,3 +386,137 @@ Estados de carga .loadingState {
     border: 1px solid #111;
   }
 }
+
+
+/* ------------------- RESPONSIVE ------------------- */
+
+// Tablets
+@media (max-width: 1024px) {
+  .profileHeader {
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+  }
+
+  .profileStats {
+    flex-wrap: wrap;
+    gap: 20px;
+  }
+
+  .bioCard {
+    padding: 20px 25px;
+    max-width: 500px;
+  }
+
+  .socialCards {
+    flex-wrap: wrap;
+    gap: 20px;
+
+    .socialCard {
+      flex: 0 0 45%;
+    }
+  }
+}
+
+// Móviles
+@media (max-width: 768px) {
+  .profileCard,
+  .settingsCard,
+  .bioCard {
+    padding: 20px;
+  }
+
+  .profileAvatar {
+    width: 60px;
+    height: 60px;
+    font-size: 24px;
+  }
+
+  .profileInfo h2 {
+    font-size: 20px;
+  }
+
+  .profileInfo p {
+    font-size: 14px;
+  }
+
+  .statValue {
+    font-size: 24px;
+  }
+
+  .statLabel {
+    font-size: 11px;
+  }
+
+  .socialCards {
+    flex-direction: column;
+    align-items: center;
+
+    .socialCard {
+      flex: 0 0 80%;
+    }
+  }
+
+  .editSaveButtonContainer {
+    flex-direction: column;
+    gap: 12px;
+  }
+}
+
+// Pequeños móviles
+@media (max-width: 480px) {
+  .profileAvatar {
+    width: 50px;
+    height: 50px;
+    font-size: 20px;
+  }
+
+  .profileInfo h2 {
+    font-size: 18px;
+  }
+
+  .profileInfo p,
+  .memberSince {
+    font-size: 12px;
+  }
+
+  .profileStats {
+    gap: 15px;
+  }
+
+  .statValue {
+    font-size: 20px;
+  }
+
+  .statLabel {
+    font-size: 10px;
+  }
+
+  .socialCard {
+    padding: 15px;
+    font-size: 13px;
+
+    h4 {
+      font-size: 14px;
+    }
+
+    p, input {
+      font-size: 12px;
+    }
+
+    button {
+      padding: 6px 12px;
+      font-size: 12px;
+    }
+  }
+
+  .bioCard {
+    padding: 15px 20px;
+    font-size: 14px;
+  }
+
+  .editSaveButton {
+    padding: 10px 20px;
+    font-size: 13px;
+  }
+}
