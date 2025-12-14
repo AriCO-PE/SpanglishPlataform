@@ -172,3 +172,80 @@ s para la sección de administración .sectionTitle {
         }
     }
 }
+
+// -------------------------
+// Responsive
+// -------------------------
+@media (max-width: 1024px) {
+    .sidebar {
+        width: 220px;
+    }
+
+    .logoText, .text {
+        font-size: 13px;
+    }
+
+    .icon, .referralIcon, .sectionIcon {
+        font-size: 16px;
+    }
+
+    .badge {
+        font-size: 9px;
+        padding: 1px 5px;
+    }
+}
+
+@media (max-width: 768px) {
+    .sidebar {
+        transform: translateX(-100%);
+        position: fixed;
+        z-index: 1000;
+        transition: transform 0.3s ease;
+    }
+
+    .sidebar.open {
+        transform: translateX(0);
+    }
+
+    .mainContent {
+        margin-left: 0;
+        transition: margin-left 0.3s ease;
+    }
+
+    .sidebarToggle {
+        display: flex;
+        position: fixed;
+        top: 16px;
+        left: 16px;
+        z-index: 1100;
+        background-color: $card-bg;
+        border: 1px solid $border-primary;
+        border-radius: 8px;
+        padding: 8px;
+        cursor: pointer;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .logoText, .text, .sectionText, .referralText {
+        font-size: 12px;
+    }
+
+    .icon, .referralIcon, .sectionIcon {
+        font-size: 14px;
+    }
+}
+
+@media (max-width: 480px) {
+    .sidebar {
+        width: 200px;
+    }
+
+    .logoText, .text, .sectionText, .referralText {
+        font-size: 11px;
+    }
+
+    .icon, .referralIcon, .sectionIcon {
+        font-size: 13px;
+    }
+}

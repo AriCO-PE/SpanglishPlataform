@@ -18,6 +18,7 @@ interface SidebarItem {
 const SidebarContent = () => {
   const pathname = usePathname();
   const [currentUser, setCurrentUser] = useState<User | null>(null);
+  const [sidebarOpen, setSidebarOpen] = useState(false); // 👈 estado para toggle
 
   useEffect(() => {
     const loadUser = async () => {
@@ -30,6 +31,8 @@ const SidebarContent = () => {
     };
     loadUser();
   }, []);
+
+  const toggleSidebar = () => setSidebarOpen(!sidebarOpen); // 👈 función toggle
 
   // 🔹 Menú principal
   const menuItems: SidebarItem[] = [
@@ -53,80 +56,96 @@ const SidebarContent = () => {
   ];
 
   return (
-    <div className={styles.sidebar}>
-      <div className={styles.header}>
-        <Link href="/" className={styles.logo}>
-          <Image
-            src="/span.jpeg"
-            alt="After Life Academy"
-            width={40}
-            height={40}
-            className={styles.logoImage}
-          />
-          <span className={styles.logoText}>SPANGLISH ACADEMY</span>
-        </Link>
+    <>
+      {/* Botón hamburguesa */}
+      <button
+        className={styles.sidebarToggle}
+        onClick={toggleSidebar}
+        aria-label="Toggle sidebar"
+      >
+        ☰
+      </button>
+
+      {/* Sidebar */}
+      <div className={`${styles.sidebar} ${sidebarOpen ? styles.open : ""}`}>
+        <div className={styles.header}>
+          <Link href="/" className={styles.logo}>
+            <Image
+              src="/span.jpeg"
+              alt="After Life Academy"
+              width={40}
+              height={40}
+              className={styles.logoImage}
+            />
+            <span className={styles.logoText}>SPANGLISH ACADEMY</span>
+          </Link>
+        </div>
+
+        {/* Menú principal */}
+        <nav className={styles.nav}>
+          {menuItems.map((item, index) => (
+            <Link
+              key={index}
+              href={item.href}
+              target={item.target}
+              className={`${styles.navItem} ${pathname === item.href ? styles.active : ""}`}
+              prefetch={true}
+            >
+              {item.icon && <span className={styles.icon}>{item.icon}</span>}
+              <span className={styles.text}>{item.name}</span>
+              {item.badge && <span className={styles.badge}>{item.badge}</span>}
+            </Link>
+          ))}
+        </nav>
+
+        <div className={styles.divider}></div>
+
+        {/* Sección de Administración - Solo para admins */}
+        {currentUser?.role === "admin" && (
+          <>
+            <div className={styles.sectionTitle}>
+              <span className={styles.sectionIcon}>👑</span>
+              <span className={styles.sectionText}>Administración</span>
+            </div>
+            <nav className={styles.nav}>
+              {adminItems.map((item, index) => (
+                <Link
+                  key={index}
+                  href={item.href}
+                  target={item.target}
+                  className={`${styles.navItem} ${styles.adminItem} ${
+                    pathname === item.href ? styles.active : ""
+                  }`}
+                  prefetch={true}
+                >
+                  {item.icon && <span className={styles.icon}>{item.icon}</span>}
+                  <span className={styles.text}>{item.name}</span>
+                </Link>
+              ))}
+            </nav>
+            <div className={styles.divider}></div>
+          </>
+        )}
+
+        {/* Otros items del sidebar */}
+        <nav className={styles.nav}>
+          {sidebarItems.map((item, index) => (
+            <Link
+              key={index}
+              href={item.href}
+              target={item.target}
+              className={`${styles.navItem} ${
+                pathname === item.href ? styles.active : ""
+              }`}
+              prefetch={true}
+            >
+              {item.icon && <span className={styles.icon}>{item.icon}</span>}
+              <span className={styles.text}>{item.name}</span>
+            </Link>
+          ))}
+        </nav>
       </div>
-
-      {/* Menú principal */}
-      <nav className={styles.nav}>
-        {menuItems.map((item, index) => (
-          <Link
-            key={index}
-            href={item.href}
-            target={item.target}
-            className={`${styles.navItem} ${pathname === item.href ? styles.active : ""}`}
-            prefetch={true}
-          >
-            {item.icon && <span className={styles.icon}>{item.icon}</span>}
-            <span className={styles.text}>{item.name}</span>
-            {item.badge && <span className={styles.badge}>{item.badge}</span>}
-          </Link>
-        ))}
-      </nav>
-
-      <div className={styles.divider}></div>
-
-      {/* Sección de Administración - Solo para admins */}
-      {currentUser?.role === "admin" && (
-        <>
-          <div className={styles.sectionTitle}>
-            <span className={styles.sectionIcon}>👑</span>
-            <span className={styles.sectionText}>Administración</span>
-          </div>
-          <nav className={styles.nav}>
-            {adminItems.map((item, index) => (
-              <Link
-                key={index}
-                href={item.href}
-                target={item.target}
-                className={`${styles.navItem} ${styles.adminItem} ${pathname === item.href ? styles.active : ""}`}
-                prefetch={true}
-              >
-                {item.icon && <span className={styles.icon}>{item.icon}</span>}
-                <span className={styles.text}>{item.name}</span>
-              </Link>
-            ))}
-          </nav>
-          <div className={styles.divider}></div>
-        </>
-      )}
-
-      {/* Otros items del sidebar */}
-      <nav className={styles.nav}>
-        {sidebarItems.map((item, index) => (
-          <Link
-            key={index}
-            href={item.href}
-            target={item.target}
-            className={`${styles.navItem} ${pathname === item.href ? styles.active : ""}`}
-            prefetch={true}
-          >
-            {item.icon && <span className={styles.icon}>{item.icon}</span>}
-            <span className={styles.text}>{item.name}</span>
-          </Link>
-        ))}
-      </nav>
-    </div>
+    </>
   );
 };
 
