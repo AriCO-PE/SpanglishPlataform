@@ -152,3 +152,141 @@
     font-size: 14px;
     font-weight: 600;
 }
+
+/* ------------------- RESPONSIVE ------------------- */
+
+// Tablets
+@media (max-width: 1024px) {
+  .currentUserCard {
+    padding: 20px;
+  }
+
+  .rankNumber {
+    font-size: 40px;
+  }
+
+  .searchBar input {
+    max-width: 100%;
+  }
+
+  .leaderboard {
+    padding: 20px;
+  }
+
+  .leaderboardItem {
+    grid-template-columns: 60px 1fr auto;
+    padding: 12px;
+  }
+
+  .rankBadge {
+    font-size: 18px;
+    width: 22px;
+  }
+
+  .rankText,
+  .userPoints {
+    font-size: 13px;
+  }
+}
+
+// Móviles
+@media (max-width: 768px) {
+  .rankingContainer {
+    gap: 20px;
+  }
+
+  .currentUserCard {
+    padding: 16px;
+  }
+
+  .userName {
+    font-size: 16px;
+  }
+
+  .userSpecialty {
+    font-size: 12px;
+  }
+
+  .rankNumber {
+    font-size: 32px;
+  }
+
+  .rankPoints {
+    font-size: 12px;
+  }
+
+  .searchBar input {
+    padding: 10px 12px;
+    font-size: 13px;
+  }
+
+  .leaderboard {
+    padding: 16px;
+  }
+
+  .leaderboardItem {
+    grid-template-columns: 50px 1fr auto;
+    padding: 10px;
+  }
+
+  .rankBadge {
+    font-size: 16px;
+    width: 20px;
+  }
+
+  .rankText,
+  .userPoints {
+    font-size: 12px;
+  }
+}
+
+// Pequeños móviles
+@media (max-width: 480px) {
+  .rankingContainer {
+    gap: 15px;
+  }
+
+  .currentUserCard {
+    padding: 12px;
+  }
+
+  .userName {
+    font-size: 14px;
+  }
+
+  .userSpecialty {
+    font-size: 11px;
+  }
+
+  .rankNumber {
+    font-size: 28px;
+  }
+
+  .rankPoints {
+    font-size: 11px;
+  }
+
+  .searchBar input {
+    padding: 8px 10px;
+    font-size: 12px;
+  }
+
+  .leaderboard {
+    padding: 12px;
+  }
+
+  .leaderboardItem {
+    grid-template-columns: 40px 1fr auto;
+    padding: 8px;
+  }
+
+  .rankBadge {
+    font-size: 14px;
+    width: 18px;
+  }
+
+  .rankText,
+  .userPoints {
+    font-size: 11px;
+  }
+}
