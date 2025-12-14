@@ -454,3 +454,146 @@
   }
 }
 
+// Tablets
+@media (max-width: 1024px) {
+  .mainContent {
+    margin-left: 0;
+    width: 100%;
+    
+    &::before {
+      left: 0;
+    }
+  }
+
+  .header {
+    padding: 16px 24px;
+  }
+
+  .headerLeft {
+    gap: 12px;
+  }
+
+  .searchBar {
+    min-width: 180px;
+    padding: 8px 12px;
+  }
+
+  .statsGrid {
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  }
+
+  .courseCard {
+    padding: 24px;
+  }
+
+  .courseInfo h3 {
+    font-size: 24px;
+  }
+
+  .courseInfo p {
+    font-size: 14px;
+  }
+
+  .tabsNav {
+    gap: 1rem;
+  }
+
+  .newsGrid {
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  }
+}
+
+// Móviles
+@media (max-width: 768px) {
+  .header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+
+  .headerRight {
+    width: 100%;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .searchBar {
+    width: 100%;
+    min-width: unset;
+  }
+
+  .statsGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .courseCard {
+    padding: 16px;
+  }
+
+  .courseInfo h3 {
+    font-size: 20px;
+  }
+
+  .courseInfo p {
+    font-size: 13px;
+  }
+
+  .tabsNav {
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  .newsGrid {
+    grid-template-columns: 1fr;
+  }
+}
+
+// Pequeños móviles
+@media (max-width: 480px) {
+  .header {
+    padding: 12px 16px;
+  }
+
+  .menuToggle {
+    padding: 8px;
+  }
+
+  .title {
+    font-size: 20px;
+  }
+
+  .searchBar {
+    padding: 6px 10px;
+  }
+
+  .notificationBtn,
+  .avatar {
+    width: 36px;
+    height: 36px;
+  }
+
+  .greeting h2 {
+    font-size: 24px;
+  }
+
+  .greeting p {
+    font-size: 14px;
+  }
+
+  .statCard {
+    padding: 16px;
+  }
+
+  .courseBadge {
+    padding: 4px 12px;
+    font-size: 10px;
+  }
+
+  .courseMenu {
+    padding: 6px;
+    font-size: 12px;
+  }
+}
+
+
