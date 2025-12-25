@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import styles from "./addbook.module.scss";
+import styles from "./AddBook.module.scss";
 
 const DIFFICULTY_OPTIONS = ["Easy", "Medium", "Hard"];
 const CATEGORY_OPTIONS = [
@@ -17,8 +17,6 @@ const CATEGORY_OPTIONS = [
 
 export default function AddBookPage() {
   const [form, setForm] = useState({
-    id: "",
-    uuid: "",
     title: "",
     author: "",
     category: "",
@@ -51,8 +49,6 @@ export default function AddBookPage() {
       alert("📚 Book added successfully");
 
       setForm({
-        id: "",
-        uuid: "",
         title: "",
         author: "",
         category: "",
@@ -78,16 +74,6 @@ export default function AddBookPage() {
 
       <form onSubmit={handleSubmit} className={styles.form}>
         <div className={styles.grid}>
-          <label className={styles.field}>
-            <span>ID *</span>
-            <input name="id" value={form.id} onChange={handleChange} required />
-          </label>
-
-          <label className={styles.field}>
-            <span>UUID *</span>
-            <input name="uuid" value={form.uuid} onChange={handleChange} required />
-          </label>
-
           <label className={`${styles.field} ${styles.full}`}>
             <span>Title *</span>
             <input name="title" value={form.title} onChange={handleChange} required />
