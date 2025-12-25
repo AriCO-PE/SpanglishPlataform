@@ -4,62 +4,74 @@
   padding: 2rem 1.25rem;
   color: #111;
   background: #fff;
+  font-family: 'Inter', sans-serif;
 }
 
 .title {
-  font-size: 1.9rem;
+  font-size: 2rem;
   font-weight: 700;
-  text-transform: uppercase;
   letter-spacing: 1px;
-  margin-bottom: 1.5rem;
-  color: #000;
-  border-bottom: 2px solid #000;
+  margin-bottom: 2rem;
+  color: #111;
+  border-bottom: 2px solid #e0e0e0;
   padding-bottom: 0.5rem;
 }
 
 .form {
   background: #fff;
-  border: 1px solid #000;
-  border-radius: 18px;
-  padding: 1.5rem;
+  border: 1px solid #e0e0e0;
+  border-radius: 16px;
+  padding: 2rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  transition: box-shadow 0.3s ease;
+
+  &:hover {
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+  }
 }
 
 .grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 1.2rem;
+  gap: 1.5rem;
 }
 
 .full {
   grid-column: 1 / -1;
 }
 
-/* ✅ Clases locales para labels e inputs */
 .field {
   display: flex;
   flex-direction: column;
   font-size: 0.9rem;
-  letter-spacing: 0.4px;
+  letter-spacing: 0.3px;
 
   span {
-    margin-bottom: 0.4rem;
+    margin-bottom: 0.5rem;
     font-weight: 600;
+    color: #333;
   }
 
   input,
   textarea,
   select {
-    border: 1px solid #000;
-    border-radius: 12px;
-    padding: 0.7rem 0.9rem;
-    background: #fff;
-    color: #000;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    padding: 0.8rem 1rem;
+    background: #fafafa;
+    color: #111;
     font-size: 0.95rem;
+    transition: all 0.2s ease;
 
     &:focus {
       outline: none;
-      box-shadow: 0 0 0 2px #000;
+      border-color: #000;
+      box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.1);
     }
+  }
+
+  textarea {
+    resize: vertical;
   }
 }
 
@@ -67,32 +79,35 @@
   margin-top: 1.5rem;
   width: 100%;
   padding: 0.9rem;
-  border-radius: 14px;
-  border: 2px solid #000;
-  background: #000;
+  border-radius: 12px;
+  border: 2px solid #111;
+  background: #111;
   color: #fff;
-  font-weight: 700;
+  font-weight: 600;
+  font-size: 0.95rem;
   letter-spacing: 0.5px;
   text-transform: uppercase;
   cursor: pointer;
-  transition: all 0.2s;
+  transition: all 0.25s ease;
 
   &:hover {
     background: #fff;
-    color: #000;
+    color: #111;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
   }
 }
 
 .banner {
   background: #111;
   color: #fff;
-  padding: 12px 18px;
+  padding: 14px 20px;
   border-radius: 12px;
   text-align: center;
   font-weight: 600;
   font-size: 1rem;
-  margin-bottom: 1.5rem;
+  margin-bottom: 2rem;
   letter-spacing: 0.3px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
 }
 
 @media (max-width: 640px) {
@@ -101,6 +116,6 @@
   }
 
   .title {
-    font-size: 1.5rem;
+    font-size: 1.6rem;
   }
 }
