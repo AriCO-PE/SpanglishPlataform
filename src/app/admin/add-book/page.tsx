@@ -1,6 +1,5 @@
-"use client";
-
 import { useState } from "react";
+import { booksService } from "@/services/booksService";
 import styles from "./addbook.module.scss";
 
 const DIFFICULTY_OPTIONS = ["Easy", "Medium", "Hard"];
@@ -19,53 +18,41 @@ export default function AddBookPage() {
   const [form, setForm] = useState({
     title: "",
     author: "",
-    category: "",
-    difficulty: "",
+    category: "Original",
+    difficulty: "Easy",
     description: "",
     cover_url: "",
     file_url: "",
   });
 
-  const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
-  ) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    const payload = { ...form, created_at: new Date().toISOString() };
-
     try {
-      const res = await fetch("/api/books", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload),
-      });
-
-      if (!res.ok) throw new Error("Error saving book");
-
+      await booksService.add({ ...form, created_at: new Date().toISOString() });
       alert("📚 Book added successfully");
 
       setForm({
         title: "",
         author: "",
-        category: "",
-        difficulty: "",
+        category: "Original",
+        difficulty: "Easy",
         description: "",
         cover_url: "",
         file_url: "",
       });
-    } catch (err) {
-      alert("❌ Error saving book");
-      console.error(err);
+    } catch (err: any) {
+      console.error("Error saving book:", err);
+      alert(`❌ Error saving book: ${err.message}`);
     }
   };
 
   return (
     <div className={styles.container}>
-      {/* Motivational banner */}
       <div className={styles.banner}>
         إذا شعرتِ بالتعب، فتذكري أنكِ أجمل امرأة في العالم يا حبيبتي.
       </div>
@@ -87,7 +74,6 @@ export default function AddBookPage() {
           <label className={styles.field}>
             <span>Category</span>
             <select name="category" value={form.category} onChange={handleChange}>
-              <option value="">— Select category —</option>
               {CATEGORY_OPTIONS.map((c) => (
                 <option key={c} value={c}>{c}</option>
               ))}
@@ -97,7 +83,6 @@ export default function AddBookPage() {
           <label className={styles.field}>
             <span>Difficulty</span>
             <select name="difficulty" value={form.difficulty} onChange={handleChange}>
-              <option value="">— Select difficulty —</option>
               {DIFFICULTY_OPTIONS.map((d) => (
                 <option key={d} value={d}>{d}</option>
               ))}
@@ -116,24 +101,12 @@ export default function AddBookPage() {
 
           <label className={styles.field}>
             <span>Cover URL</span>
-            <input
-              type="url"
-              name="cover_url"
-              value={form.cover_url}
-              onChange={handleChange}
-              placeholder="https://..."
-            />
+            <input type="url" name="cover_url" value={form.cover_url} onChange={handleChange} placeholder="https://..." />
           </label>
 
           <label className={styles.field}>
             <span>File (PDF) URL</span>
-            <input
-              type="url"
-              name="file_url"
-              value={form.file_url}
-              onChange={handleChange}
-              placeholder="https://..."
-            />
+            <input type="url" name="file_url" value={form.file_url} onChange={handleChange} placeholder="https://..." />
           </label>
         </div>
 
