@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import styles from "./AddBook.module.scss";
+import styles from "./addbook.module.scss";
 
 const DIFFICULTY_OPTIONS = ["Easy", "Medium", "Hard"];
 const CATEGORY_OPTIONS = [
