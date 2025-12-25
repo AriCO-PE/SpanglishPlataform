@@ -12,8 +12,7 @@
     "@supabase/supabase-js": "^2.87.1",
     "next": "^15.5.7",
     "react": "19.1.0",
-    "react-dom": "19.1.0",
-    "sass": "^1.91.0"
+    "react-dom": "19.1.0"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
@@ -22,6 +21,7 @@
     "@types/react-dom": "^19",
     "eslint": "^9",
     "eslint-config-next": "15.5.1",
+    "sass": "^1.97.1",
     "typescript": "^5"
   }
 }

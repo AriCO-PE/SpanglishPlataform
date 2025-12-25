@@ -78,27 +78,27 @@ export default function AddBookPage() {
 
       <form onSubmit={handleSubmit} className={styles.form}>
         <div className={styles.grid}>
-          <label>
+          <label className={styles.field}>
             <span>ID *</span>
             <input name="id" value={form.id} onChange={handleChange} required />
           </label>
 
-          <label>
+          <label className={styles.field}>
             <span>UUID *</span>
             <input name="uuid" value={form.uuid} onChange={handleChange} required />
           </label>
 
-          <label className={styles.full}>
+          <label className={`${styles.field} ${styles.full}`}>
             <span>Title *</span>
             <input name="title" value={form.title} onChange={handleChange} required />
           </label>
 
-          <label>
+          <label className={styles.field}>
             <span>Author</span>
             <input name="author" value={form.author} onChange={handleChange} />
           </label>
 
-          <label>
+          <label className={styles.field}>
             <span>Category</span>
             <select name="category" value={form.category} onChange={handleChange}>
               <option value="">— Select category —</option>
@@ -108,7 +108,7 @@ export default function AddBookPage() {
             </select>
           </label>
 
-          <label>
+          <label className={styles.field}>
             <span>Difficulty</span>
             <select name="difficulty" value={form.difficulty} onChange={handleChange}>
               <option value="">— Select difficulty —</option>
@@ -118,7 +118,7 @@ export default function AddBookPage() {
             </select>
           </label>
 
-          <label className={styles.full}>
+          <label className={`${styles.field} ${styles.full}`}>
             <span>Description</span>
             <textarea
               name="description"
@@ -128,7 +128,7 @@ export default function AddBookPage() {
             />
           </label>
 
-          <label>
+          <label className={styles.field}>
             <span>Cover URL</span>
             <input
               type="url"
@@ -139,7 +139,7 @@ export default function AddBookPage() {
             />
           </label>
 
-          <label>
+          <label className={styles.field}>
             <span>File (PDF) URL</span>
             <input
               type="url"
