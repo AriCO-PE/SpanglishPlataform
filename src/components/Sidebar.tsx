@@ -46,6 +46,7 @@ const SidebarContent = () => {
   const adminItems: SidebarItem[] = [
     { name: "Gestión de Cursos", href: "/admin/courses", icon: "📘" },
     { name: "Gestión de Usuarios", href: "/admin/users", icon: "👥" },
+    { name: "Add book", href: "/admin/add-book", icon: "📚" },
   ];
 
   // 🔹 Otros items del sidebar
