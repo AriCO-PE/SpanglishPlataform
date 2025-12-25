@@ -1,3 +1,5 @@
+"use client";
+
 import { useState } from "react";
 import { booksService } from "@/services/booksService";
 import styles from "./addbook.module.scss";
