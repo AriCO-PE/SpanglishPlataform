@@ -47,6 +47,7 @@ const SidebarContent = () => {
     { name: "Request management", href: "/admin/courses", icon: "📘" },
     { name: "User Management", href: "/admin/users", icon: "👥" },
     { name: "Add book", href: "/admin/add-book", icon: "📚" },
+    { name: "Add Challenge", href: "/admin/add-challenge", icon: "🎯" },
   ];
 
   // 🔹 Otros items del sidebar
