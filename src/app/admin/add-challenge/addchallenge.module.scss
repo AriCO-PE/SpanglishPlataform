@@ -1,50 +1,54 @@
 .page {
   min-height: 100vh;
-  background: #0f0f0f;
+  background: #0b0b0b;
   color: #ffffff;
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 40px 20px;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 48px 20px;
   font-family: "Inter", system-ui, sans-serif;
 }
 
+/* Banner */
 .messageBanner {
-  background: #111;
-  border: 1px solid #222;
-  padding: 18px;
-  border-radius: 16px;
-  max-width: 780px;
+  max-width: 760px;
   width: 100%;
   text-align: center;
-  font-size: 20px;
-  line-height: 1.8;
+  background: transparent;
+  border: 1px solid #2a2a2a;
+  padding: 16px 18px;
+  border-radius: 14px;
+  font-size: 18px;
+  line-height: 1.7;
   direction: rtl;
-  margin-bottom: 28px;
-  box-shadow: 0 10px 30px rgba(255, 255, 255, 0.05);
+  margin: 0 auto 26px auto;
+  opacity: 0.9;
 }
 
+/* Card */
 .card {
-  background: #0c0c0c;
-  border: 1px solid #1a1a1a;
+  max-width: 760px;
+  width: 100%;
+  background: #0f0f0f;
+  border: 1px solid #1f1f1f;
   border-radius: 18px;
   padding: 28px;
-  max-width: 820px;
-  width: 100%;
-  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.6);
+  box-shadow: 0 30px 70px rgba(0,0,0,0.55);
 }
 
+/* Title */
 .title {
-  font-size: 26px;
+  font-size: 24px;
   font-weight: 600;
-  margin-bottom: 20px;
-  letter-spacing: 1px;
+  letter-spacing: .5px;
+  margin-bottom: 14px;
 }
 
+/* Form */
 .form {
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 14px;
 }
 
 .field {
@@ -53,32 +57,33 @@
   gap: 6px;
 
   label {
-    font-size: 14px;
-    opacity: 0.8;
+    font-size: 13px;
+    opacity: .7;
   }
 
   input,
   textarea {
-    background: #090909;
-    border: 1px solid #1f1f1f;
+    background: #0a0a0a;
+    border: 1px solid #222;
     color: white;
-    padding: 12px;
+    padding: 12px 11px;
     border-radius: 10px;
     outline: none;
-    transition: border 0.2s, box-shadow 0.2s;
+    transition: border .25s, box-shadow .25s;
 
     &:focus {
-      border: 1px solid #fff;
-      box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.1);
+      border: 1px solid #ffffff;
+      box-shadow: 0 0 0 2px rgba(255,255,255,.08);
     }
   }
 
   textarea {
-    min-height: 100px;
+    min-height: 110px;
     resize: vertical;
   }
 }
 
+/* Grid */
 .row {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -87,7 +92,7 @@
 
 /* Button */
 .button {
-  margin-top: 10px;
+  margin-top: 6px;
   background: white;
   color: black;
   border: none;
@@ -95,59 +100,47 @@
   border-radius: 12px;
   font-weight: 600;
   cursor: pointer;
-  transition: 0.2s;
+  transition: .18s;
 
   &:hover {
-    background: #e5e5e5;
     transform: translateY(-1px);
+    background: #e7e7e7;
   }
 }
 
-/* 📱 Responsive — Mobile First */
+/* 📱 Responsive */
 
-@media (max-width: 900px) {
+@media (max-width: 820px) {
+  .page {
+    padding: 36px 18px;
+  }
+
   .card {
-    padding: 22px;
-  }
-
-  .messageBanner {
-    font-size: 18px;
-    padding: 16px;
+    padding: 24px;
   }
 }
 
-@media (max-width: 680px) {
+@media (max-width: 640px) {
   .row {
     grid-template-columns: 1fr;
   }
 
-  .page {
-    padding: 24px 14px;
-  }
-
-  .title {
-    font-size: 22px;
-  }
-
   .messageBanner {
     font-size: 16px;
-    border-radius: 14px;
   }
 }
 
 @media (max-width: 420px) {
+  .page {
+    padding: 26px 14px;
+  }
+
   .card {
-    padding: 18px;
+    padding: 20px;
     border-radius: 14px;
   }
 
-  .messageBanner {
-    padding: 12px;
-    font-size: 15px;
-  }
-
-  .field input,
-  .field textarea {
-    font-size: 14px;
+  .title {
+    font-size: 20px;
   }
 }
