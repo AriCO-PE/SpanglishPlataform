@@ -11,8 +11,8 @@ interface Challenge {
   title: string;
   summary: string;
   description: string;
-  points: number; // aura que entrega
-  hours: number;  // horas de estudio que entrega
+  points: number;
+  hours: number;
 }
 
 interface Submission {
@@ -26,6 +26,10 @@ export default function ChallengesPage() {
   const [selectedChallenge, setSelectedChallenge] = useState<Challenge | null>(null);
   const [submissions, setSubmissions] = useState<Submission[]>([]);
 
+  // NEW STATES
+  const [search, setSearch] = useState("");
+  const [showAll, setShowAll] = useState(false);
+
   useEffect(() => {
     fetchChallenges();
     fetchSubmissions();
@@ -34,23 +38,13 @@ export default function ChallengesPage() {
   const fetchChallenges = async () => {
     setLoading(true);
     const { data, error } = await supabase.from("challenges").select("*");
-    if (error) {
-      console.error("Error fetching challenges:", error);
-    } else if (data) {
-      setChallenges(data);
-    }
+    if (!error && data) setChallenges(data);
     setLoading(false);
   };
 
   const fetchSubmissions = async () => {
-    const { data, error } = await supabase
-      .from("challenge_submissions")
-      .select("*");
-    if (error) {
-      console.error("Error fetching submissions:", error);
-    } else if (data) {
-      setSubmissions(data);
-    }
+    const { data } = await supabase.from("challenge_submissions").select("*");
+    if (data) setSubmissions(data);
   };
 
   const handleComplete = async (challengeId: string) => {
@@ -63,21 +57,27 @@ export default function ChallengesPage() {
       status: "pending",
     });
 
-    if (error) {
-      console.error("Error enviando reto:", error);
-      alert("No se pudo marcar como cumplido");
-    } else {
-      alert("Reto enviado para verificación por el administrador.");
-      // Actualizar la lista de envíos localmente
-      setSubmissions([...submissions, { challenge_id: challengeId, status: "pending" }]);
-    }
+    if (error) return alert("No se pudo marcar como cumplido");
+
+    alert("Reto enviado para verificación por el administrador.");
+    setSubmissions([...submissions, { challenge_id: challengeId, status: "pending" }]);
   };
 
-  const isApproved = (challengeId: string) => {
-    return submissions.some(
-      (sub) => sub.challenge_id === challengeId && sub.status === "approved"
+  const isApproved = (challengeId: string) =>
+    submissions.some(
+      (s) => s.challenge_id === challengeId && s.status === "approved"
     );
-  };
+
+  // FILTER LOGIC
+  const filteredChallenges = challenges.filter((c) => {
+    const matchesSearch = c.title.toLowerCase().includes(search.toLowerCase());
+    const isCompleted = isApproved(c.id);
+
+    // If "showAll" is OFF → hide completed
+    if (!showAll && isCompleted) return false;
+
+    return matchesSearch;
+  });
 
   if (loading) return <p>Cargando retos...</p>;
 
@@ -86,9 +86,24 @@ export default function ChallengesPage() {
       <Sidebar />
       <PageLayout title="Retos">
         <div className={styles.challengesContainer}>
-          {challenges.length === 0 && <p>No hay retos disponibles.</p>}
 
-          {challenges.map((challenge) => (
+          {/* SEARCH + TOGGLE */}
+          <div className={styles.controls}>
+            <input
+              type="text"
+              placeholder="Buscar reto por nombre..."
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+            />
+
+            <button onClick={() => setShowAll(!showAll)}>
+              {showAll ? "Ocultar completados" : "Ver todos"}
+            </button>
+          </div>
+
+          {filteredChallenges.length === 0 && <p>No hay retos disponibles.</p>}
+
+          {filteredChallenges.map((challenge) => (
             <div key={challenge.id} className={styles.challengeCard}>
               <h3>{challenge.title}</h3>
               <p>{challenge.summary}</p>
@@ -112,7 +127,7 @@ export default function ChallengesPage() {
             </div>
           ))}
 
-          {/* Modal de detalles */}
+          {/* MODAL */}
           {selectedChallenge && (
             <div
               className={styles.modalBackdrop}
