@@ -70,3 +70,52 @@
     }
   }
 }
+
+
+.banner {
+  margin: 20px 0;
+  padding: 14px;
+  border-radius: 12px;
+  background: #111;
+  color: #fff;
+  font-weight: 600;
+  text-align: center;
+  letter-spacing: .3px;
+}
+
+.controls {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 20px;
+
+  input {
+    flex: 1;
+    padding: 10px 14px;
+    border: 1px solid #111;
+    border-radius: 10px;
+    background: #fff;
+    color: #111;
+  }
+}
+
+.filterGroup {
+  display: flex;
+  gap: 8px;
+
+  button {
+    padding: 8px 14px;
+    border-radius: 10px;
+    border: 1px solid #111;
+    background: transparent;
+    cursor: pointer;
+    transition: .2s;
+
+    &.active,
+    &:hover {
+      background: #111;
+      color: #fff;
+    }
+  }
+}

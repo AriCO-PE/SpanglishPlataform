@@ -37,6 +37,10 @@ export default function AdminChallengesPage() {
   const [submissions, setSubmissions] = useState<ChallengeSubmission[]>([]);
   const [loading, setLoading] = useState(true);
 
+  // NEW UI STATE
+  const [search, setSearch] = useState("");
+  const [statusFilter, setStatusFilter] = useState<"all" | "pending" | "approved" | "rejected">("all");
+
   useEffect(() => {
     fetchSubmissions();
   }, []);
@@ -53,9 +57,7 @@ export default function AdminChallengesPage() {
       `)
       .order("created_at", { ascending: false });
 
-    if (error) console.error("Error fetching submissions:", error);
-    else setSubmissions(data as ChallengeSubmission[]);
-
+    if (!error && data) setSubmissions(data as ChallengeSubmission[]);
     setLoading(false);
   };
 
@@ -63,66 +65,108 @@ export default function AdminChallengesPage() {
     const submission = submissions.find((s) => s.id === submissionId);
     if (!submission) return;
 
-    // Actualizar el submission a approved
-    const { error: approveError } = await supabase
-      .from("challenge_submissions")
-      .update({ status: "approved" })
-      .eq("id", submissionId);
+    await supabase.from("challenge_submissions").update({ status: "approved" }).eq("id", submissionId);
 
-    if (approveError) return alert("Error al aprobar la solicitud");
-
-    // Actualizar los datos del usuario: aura, hours_studied, courses_completed
-    const { error: userError } = await supabase
+    await supabase
       .from("users")
       .update({
         aura: (submission.users?.aura || 0) + (submission.challenges?.points || 0),
-        hours_studied:
-          (submission.users?.hours_studied || 0) + (submission.challenges?.hours || 0),
+        hours_studied: (submission.users?.hours_studied || 0) + (submission.challenges?.hours || 0),
         courses_completed: (submission.users?.courses_completed || 0) + 1,
       })
       .eq("id", submission.user_id);
 
-    if (userError) return alert("Error al actualizar datos del usuario");
-
-    alert("Reto aprobado correctamente");
     fetchSubmissions();
   };
 
   const handleReject = async (submissionId: string) => {
-    const { error } = await supabase
-      .from("challenge_submissions")
-      .update({ status: "rejected" })
-      .eq("id", submissionId);
-
-    if (error) return alert("Error al rechazar la solicitud");
-    alert("Reto rechazado");
+    await supabase.from("challenge_submissions").update({ status: "rejected" }).eq("id", submissionId);
     fetchSubmissions();
   };
 
-  if (loading) return <p>Cargando solicitudes de retos...</p>;
+  // ---------- FILTER + SEARCH ----------
+  const filteredSubmissions = submissions.filter((s) => {
+    const matchesStatus = statusFilter === "all" || s.status === statusFilter;
+
+    const term = search.toLowerCase();
+    const matchesSearch =
+      s.users?.first_name?.toLowerCase().includes(term) ||
+      s.users?.last_name?.toLowerCase().includes(term) ||
+      s.users?.email?.toLowerCase().includes(term) ||
+      s.challenges?.title?.toLowerCase().includes(term);
+
+    return matchesStatus && matchesSearch;
+  });
+
+  if (loading) return <p>Loading challenge submissions...</p>;
 
   return (
     <AuthGuard>
       <Sidebar />
-      <PageLayout title="Administración de Retos">
+      <PageLayout title="Challenge Administration">
         <div className={styles.container}>
-          {submissions.length === 0 && (
-            <p>No hay solicitudes de retos pendientes.</p>
+
+          {/* MOTIVATIONAL BANNER */}
+          <div className={styles.banner}>
+            <span>بإمكانكِ فعلها يا حبيبتي! استمري في المحاولة!</span>
+          </div>
+
+          {/* FILTER BAR */}
+          <div className={styles.controls}>
+            <input
+              type="text"
+              placeholder="Search by student or challenge..."
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+            />
+
+            <div className={styles.filterGroup}>
+              <button
+                className={statusFilter === "all" ? styles.active : ""}
+                onClick={() => setStatusFilter("all")}
+              >
+                All
+              </button>
+              <button
+                className={statusFilter === "pending" ? styles.active : ""}
+                onClick={() => setStatusFilter("pending")}
+              >
+                Pending
+              </button>
+              <button
+                className={statusFilter === "approved" ? styles.active : ""}
+                onClick={() => setStatusFilter("approved")}
+              >
+                Approved
+              </button>
+              <button
+                className={statusFilter === "rejected" ? styles.active : ""}
+                onClick={() => setStatusFilter("rejected")}
+              >
+                Rejected
+              </button>
+            </div>
+          </div>
+
+          {filteredSubmissions.length === 0 && (
+            <p>No challenge submissions found.</p>
           )}
 
-          {submissions.map((submission) => (
+          {filteredSubmissions.map((submission) => (
             <div key={submission.id} className={styles.submissionCard}>
               <h3>{submission.challenges.title}</h3>
+
               <p>
-                <strong>Alumno:</strong> {submission.users.first_name}{" "}
-                {submission.users.last_name} ({submission.users.email})
+                <strong>Student:</strong> {submission.users.first_name} {submission.users.last_name} ({submission.users.email})
               </p>
+
               <p>
-                <strong>Horas:</strong> {submission.challenges.hours} |{" "}
-                <strong>Puntos:</strong> {submission.challenges.points} aura
+                <strong>Hours:</strong> {submission.challenges.hours} &nbsp;|&nbsp;
+                <strong>Points:</strong> {submission.challenges.points} aura
               </p>
+
               <p>
-                <strong>Estado:</strong>{" "}
+                <strong>Status:</strong>{" "}
                 <span
                   className={
                     submission.status === "approved"
@@ -138,17 +182,11 @@ export default function AdminChallengesPage() {
 
               {submission.status === "pending" && (
                 <div className={styles.actions}>
-                  <button
-                    className={styles.approveButton}
-                    onClick={() => handleApprove(submission.id)}
-                  >
-                    Aprobar
+                  <button className={styles.approveButton} onClick={() => handleApprove(submission.id)}>
+                    Approve
                   </button>
-                  <button
-                    className={styles.rejectButton}
-                    onClick={() => handleReject(submission.id)}
-                  >
-                    Rechazar
+                  <button className={styles.rejectButton} onClick={() => handleReject(submission.id)}>
+                    Reject
                   </button>
                 </div>
               )}
