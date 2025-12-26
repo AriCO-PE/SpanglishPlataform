@@ -9,69 +9,53 @@ import styles from "./certifications.module.scss";
 
 type DiplomaStatus = "pending" | "approved" | "rejected" | null;
 
-type Diploma = {
+type Certification = {
   id: string;
-  level: "A1" | "A2" | "B1" | "B2" | "C1";
-  aura_used: number;
+  name: string;        // Nivel o nombre del diploma
+  description: string;
+  cost: number;
+  created_at: string;
+};
+
+type Submission = {
+  certificacion_id: string;
   status: DiplomaStatus;
 };
 
-const CERTIFICATIONS = [
-  { 
-    level: "A1", 
-    aura: 10000, 
-    difficulty: "Basic", 
-    description: "Demonstrates basic knowledge of Spanish. You can understand simple phrases and express yourself in familiar contexts." 
-  },
-  { 
-    level: "A2", 
-    aura: 10000, 
-    difficulty: "Basic/Intermediate", 
-    description: "Shows ability to communicate in everyday situations, understand frequently used expressions, and engage in simple conversations." 
-  },
-  { 
-    level: "B1", 
-    aura: 15000, 
-    difficulty: "Intermediate", 
-    description: "Able to handle most situations while traveling, describe experiences, and give reasons and explanations for opinions." 
-  },
-  { 
-    level: "B2", 
-    aura: 15000, 
-    difficulty: "Intermediate/Advanced", 
-    description: "Can understand main ideas of complex texts, interact fluently with native speakers, and produce clear, detailed text on various subjects." 
-  },
-  { 
-    level: "C1", 
-    aura: 20000, 
-    difficulty: "Advanced", 
-    description: "Demonstrates advanced proficiency. Can understand demanding texts, express ideas fluently and spontaneously, and use Spanish effectively in academic and professional contexts." 
-  },
-];
-
 const CertificationsPage: React.FC = () => {
-  const [diplomas, setDiplomas] = useState<Record<string, DiplomaStatus>>({});
+  const [certs, setCerts] = useState<Certification[]>([]);
+  const [submissions, setSubmissions] = useState<Record<string, DiplomaStatus>>({});
   const [loading, setLoading] = useState(false);
   const [expanded, setExpanded] = useState<Record<string, boolean>>({});
 
-  const fetchDiplomas = async () => {
+  const fetchData = async () => {
     setLoading(true);
     try {
       const { data: { user }, error: userError } = await supabase.auth.getUser();
       if (userError || !user) throw new Error("No user logged in");
 
-      const { data, error } = await supabase
-        .from("diplomas")
+      // 1️⃣ Traer todas las certificaciones
+      const { data: certData, error: certError } = await supabase
+        .from("certificacion")
         .select("*")
+        .order("cost", { ascending: true });
+
+      if (certError) throw certError;
+      setCerts(certData || []);
+
+      // 2️⃣ Traer las solicitudes del usuario
+      const { data: subData, error: subError } = await supabase
+        .from("certificacion_submissions")
+        .select("certificacion_id, status")
         .eq("user_id", user.id);
 
-      if (error) throw error;
+      if (subError) throw subError;
 
       const statusMap: Record<string, DiplomaStatus> = {};
-      data?.forEach((d: any) => {
-        statusMap[d.level] = d.status;
+      subData?.forEach((s: Submission) => {
+        statusMap[s.certificacion_id] = s.status;
       });
-      setDiplomas(statusMap);
+      setSubmissions(statusMap);
     } catch (err) {
       console.error(err);
     } finally {
@@ -79,35 +63,34 @@ const CertificationsPage: React.FC = () => {
     }
   };
 
-  const handleRequest = async (level: string, aura: number) => {
+  const handleRequest = async (cert: Certification) => {
     setLoading(true);
     try {
       const { data: { user }, error: userError } = await supabase.auth.getUser();
       if (userError || !user) throw new Error("No user logged in");
 
-      const { error } = await supabase.from("diplomas").insert({
+      const { error } = await supabase.from("certificacion_submissions").insert({
         user_id: user.id,
-        level,
-        aura_used: aura,
+        certificacion_id: cert.id,
       });
 
       if (error) throw error;
 
-      setDiplomas((prev) => ({ ...prev, [level]: "pending" }));
+      setSubmissions((prev) => ({ ...prev, [cert.id]: "pending" }));
     } catch (err) {
       console.error(err);
-      alert("Error requesting the diploma");
+      alert("Error requesting the certification");
     } finally {
       setLoading(false);
     }
   };
 
   useEffect(() => {
-    fetchDiplomas();
+    fetchData();
   }, []);
 
-  const toggleDetails = (level: string) => {
-    setExpanded((prev) => ({ ...prev, [level]: !prev[level] }));
+  const toggleDetails = (id: string) => {
+    setExpanded((prev) => ({ ...prev, [id]: !prev[id] }));
   };
 
   return (
@@ -126,15 +109,7 @@ const CertificationsPage: React.FC = () => {
             </div>
 
             <div className={styles.certGrid}>
-              <div className={styles.group}>
-                {CERTIFICATIONS.slice(0, 2).map((cert) => renderCertCard(cert))}
-              </div>
-              <div className={styles.group}>
-                {CERTIFICATIONS.slice(2, 4).map((cert) => renderCertCard(cert))}
-              </div>
-              <div className={`${styles.group} ${styles.single}`}>
-                {renderCertCard(CERTIFICATIONS[4])}
-              </div>
+              {certs.map((cert) => renderCertCard(cert))}
             </div>
           </main>
         </div>
@@ -142,20 +117,19 @@ const CertificationsPage: React.FC = () => {
     </AuthGuard>
   );
 
-  function renderCertCard(cert: typeof CERTIFICATIONS[number]) {
-    const status = diplomas[cert.level] || null;
-    const isExpanded = expanded[cert.level] || false;
+  function renderCertCard(cert: Certification) {
+    const status = submissions[cert.id] || null;
+    const isExpanded = expanded[cert.id] || false;
 
     return (
-      <div key={cert.level} className={styles.certCard}>
-        <h2>{cert.level}</h2>
-        <p><strong>Difficulty:</strong> {cert.difficulty}</p>
-        <p><strong>Aura required:</strong> {cert.aura}</p>
+      <div key={cert.id} className={styles.certCard}>
+        <h2>{cert.name}</h2>
+        <p><strong>Aura required:</strong> {cert.cost}</p>
 
         {isExpanded && <p className={styles.description}>{cert.description}</p>}
 
         <div className={styles.buttons}>
-          <button onClick={() => toggleDetails(cert.level)}>
+          <button onClick={() => toggleDetails(cert.id)}>
             {isExpanded ? "Hide Details" : "Details"}
           </button>
 
@@ -171,7 +145,7 @@ const CertificationsPage: React.FC = () => {
             <button
               className={styles.request}
               disabled={loading}
-              onClick={() => handleRequest(cert.level, cert.aura)}
+              onClick={() => handleRequest(cert)}
             >
               Request
             </button>
