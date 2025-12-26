@@ -4,6 +4,7 @@ import React, { useEffect, useState } from "react";
 import { supabase } from "@/lib/supabase";
 import AuthGuard from "@/components/AuthGuard";
 import PageLayout from "@/components/PageLayout";
+import Sidebar from "@/components/Sidebar";
 import styles from "./certifications.module.scss";
 
 type DiplomaStatus = "pending" | "approved" | "rejected" | null;
@@ -82,60 +83,63 @@ const CertificationsPage: React.FC = () => {
   return (
     <AuthGuard>
       <PageLayout title="Certifications">
-        <div className={styles.container}>
-          <div className={styles.instructions}>
-            <p>
-              You can exchange your challenge points to request a DELE
-              certification. Once your request is approved, the points will be
-              deducted from your account.
-            </p>
-          </div>
+        <div className="flex min-h-screen">
+          <Sidebar />
+          <main className={styles.container}>
+            <div className={styles.instructions}>
+              <p>
+                You can exchange your challenge points to request a DELE
+                certification. Once your request is approved, the points will be
+                deducted from your account.
+              </p>
+            </div>
 
-          <div className={styles.certGrid}>
-            {CERTIFICATIONS.map((cert) => {
-              const status = diplomas[cert.level] || null;
+            <div className={styles.certGrid}>
+              {CERTIFICATIONS.map((cert) => {
+                const status = diplomas[cert.level] || null;
 
-              return (
-                <div key={cert.level} className={styles.certCard}>
-                  <h2>{cert.level}</h2>
-                  <p>Difficulty: {cert.difficulty}</p>
-                  <p>Points required: {cert.points}</p>
+                return (
+                  <div key={cert.level} className={styles.certCard}>
+                    <h2>{cert.level}</h2>
+                    <p>Difficulty: {cert.difficulty}</p>
+                    <p>Points required: {cert.points}</p>
 
-                  <div className={styles.buttons}>
-                    <button
-                      onClick={() =>
-                        alert(
-                          `Details for ${cert.level}:\nDifficulty: ${cert.difficulty}\nPoints: ${cert.points}`
-                        )
-                      }
-                    >
-                      Details
-                    </button>
-
-                    {status === "approved" ? (
-                      <button className={styles.approved} disabled>
-                        ✅ Approved
-                      </button>
-                    ) : status === "pending" ? (
-                      <button className={styles.pending} disabled>
-                        ⏳ Verifying
-                      </button>
-                    ) : (
+                    <div className={styles.buttons}>
                       <button
-                        className={styles.request}
-                        disabled={loading}
                         onClick={() =>
-                          handleRequest(cert.level, cert.points)
+                          alert(
+                            `Details for ${cert.level}:\nDifficulty: ${cert.difficulty}\nPoints: ${cert.points}`
+                          )
                         }
                       >
-                        Request
+                        Details
                       </button>
-                    )}
+
+                      {status === "approved" ? (
+                        <button className={styles.approved} disabled>
+                          ✅ Approved
+                        </button>
+                      ) : status === "pending" ? (
+                        <button className={styles.pending} disabled>
+                          ⏳ Verifying
+                        </button>
+                      ) : (
+                        <button
+                          className={styles.request}
+                          disabled={loading}
+                          onClick={() =>
+                            handleRequest(cert.level, cert.points)
+                          }
+                        >
+                          Request
+                        </button>
+                      )}
+                    </div>
                   </div>
-                </div>
-              );
-            })}
-          </div>
+                );
+              })}
+            </div>
+          </main>
         </div>
       </PageLayout>
     </AuthGuard>
