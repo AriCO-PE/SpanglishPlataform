@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import { supabase } from "@/lib/supabase";
 import PageLayout from "@/components/PageLayout";
 import AuthGuard from "@/components/AuthGuard";
+import Sidebar from "@/components/Sidebar";
 import styles from "./add-homework.module.scss";
 
 type HomeworkForm = {
@@ -62,56 +63,59 @@ const AddHomeworkPage: React.FC = () => {
   return (
     <AuthGuard>
       <PageLayout title="Añadir Homework">
-        <div className={styles.container}>
-          <form className={styles.formWrapper} onSubmit={handleSubmit}>
-            <div className={styles.adminMessage}>
-              أنت أفضل شيء حدث لي على الإطلاق.
-            </div>
+        <div className="flex min-h-screen">
+          <Sidebar />
+          <main className={styles.container}>
+            <form className={styles.formWrapper} onSubmit={handleSubmit}>
+              <div className={styles.adminMessage}>
+                أنت أفضل شيء حدث لي على الإطلاق.
+              </div>
 
-            <h1 className={styles.title}>Añadir Homework</h1>
+              <h1 className={styles.title}>Añadir Homework</h1>
 
-            <select name="level" value={form.level} onChange={handleChange}>
-              {["A1","A2","B1","B2","C1","C2"].map((lvl) => (
-                <option key={lvl} value={lvl}>{lvl}</option>
-              ))}
-            </select>
+              <select name="level" value={form.level} onChange={handleChange}>
+                {["A1","A2","B1","B2","C1","C2"].map((lvl) => (
+                  <option key={lvl} value={lvl}>{lvl}</option>
+                ))}
+              </select>
 
-            <input
-              type="text"
-              name="title"
-              placeholder="Título"
-              value={form.title}
-              onChange={handleChange}
-              required
-            />
+              <input
+                type="text"
+                name="title"
+                placeholder="Título"
+                value={form.title}
+                onChange={handleChange}
+                required
+              />
 
-            <textarea
-              name="description"
-              placeholder="Descripción (opcional)"
-              value={form.description}
-              onChange={handleChange}
-            />
+              <textarea
+                name="description"
+                placeholder="Descripción (opcional)"
+                value={form.description}
+                onChange={handleChange}
+              />
 
-            <input
-              type="text"
-              name="pdf_url"
-              placeholder="URL del PDF (opcional)"
-              value={form.pdf_url}
-              onChange={handleChange}
-            />
+              <input
+                type="text"
+                name="pdf_url"
+                placeholder="URL del PDF (opcional)"
+                value={form.pdf_url}
+                onChange={handleChange}
+              />
 
-            <select name="type" value={form.type} onChange={handleChange}>
-              {["Redactar","Exponer","Comprender"].map((t) => (
-                <option key={t} value={t}>{t}</option>
-              ))}
-            </select>
+              <select name="type" value={form.type} onChange={handleChange}>
+                {["Redactar","Exponer","Comprender"].map((t) => (
+                  <option key={t} value={t}>{t}</option>
+                ))}
+              </select>
 
-            <button type="submit" disabled={loading}>
-              {loading ? "Creando..." : "Crear Homework"}
-            </button>
+              <button type="submit" disabled={loading}>
+                {loading ? "Creando..." : "Crear Homework"}
+              </button>
 
-            {message && <p style={{ marginTop: "1rem", textAlign: "center" }}>{message}</p>}
-          </form>
+              {message && <p style={{ marginTop: "1rem", textAlign: "center" }}>{message}</p>}
+            </form>
+          </main>
         </div>
       </PageLayout>
     </AuthGuard>
