@@ -38,7 +38,7 @@ const CertificationRequestsPage: React.FC = () => {
           certificacion:certificacion_id(name),
           users:user_id(email)
         `)
-        .order("created_at", { ascending: false }); // los nuevos primero
+        .order("created_at", { ascending: false });
 
       if (error) throw error;
 
@@ -85,6 +85,27 @@ const CertificationRequestsPage: React.FC = () => {
   }, [filter, search, requests]);
 
   const handleFilterChange = (value: "all" | RequestStatus) => setFilter(value);
+
+  const handleStatusChange = async (id: string, status: "approved" | "rejected") => {
+    setLoading(true);
+    try {
+      const { error } = await supabase
+        .from("certificacion_submissions")
+        .update({ status })
+        .eq("id", id);
+
+      if (error) throw error;
+
+      setRequests(prev =>
+        prev.map(r => (r.id === id ? { ...r, status } : r))
+      );
+    } catch (err) {
+      console.error(err);
+      alert("Error updating status");
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <PageLayout title="Certification Requests">
@@ -134,6 +155,23 @@ const CertificationRequestsPage: React.FC = () => {
                       <span className={`${styles.status} ${r.status}`}>
                         {r.status.charAt(0).toUpperCase() + r.status.slice(1)}
                       </span>
+
+                      {r.status === "pending" && (
+                        <div className={styles.actionButtons}>
+                          <button
+                            className={styles.approve}
+                            onClick={() => handleStatusChange(r.id, "approved")}
+                          >
+                            ✅ Approve
+                          </button>
+                          <button
+                            className={styles.reject}
+                            onClick={() => handleStatusChange(r.id, "rejected")}
+                          >
+                            ❌ Reject
+                          </button>
+                        </div>
+                      )}
                     </td>
                     <td>{new Date(r.created_at).toLocaleString()}</td>
                   </tr>
