@@ -52,6 +52,7 @@ const CERTIFICATIONS = [
 const CertificationsPage: React.FC = () => {
   const [diplomas, setDiplomas] = useState<Record<string, DiplomaStatus>>({});
   const [loading, setLoading] = useState(false);
+  const [expanded, setExpanded] = useState<Record<string, boolean>>({});
 
   const fetchDiplomas = async () => {
     setLoading(true);
@@ -105,6 +106,10 @@ const CertificationsPage: React.FC = () => {
     fetchDiplomas();
   }, []);
 
+  const toggleDetails = (level: string) => {
+    setExpanded((prev) => ({ ...prev, [level]: !prev[level] }));
+  };
+
   return (
     <AuthGuard>
       <PageLayout title="Certifications">
@@ -115,9 +120,8 @@ const CertificationsPage: React.FC = () => {
               <h1>Challenge Yourself and Unlock Your DELE Certification!</h1>
               <p>
                 Your dedication and hours of study are converted into <strong>Aura</strong>. 
-                You can exchange your Aura to request official DELE certifications. 
-                These certifications demonstrate your real progress and open doors to new opportunities. 
-                Remember, once approved, the Aura will be deducted from your account — choose wisely and aim high!
+                Exchange your Aura to request official DELE certifications and show your progress. 
+                Once approved, Aura will be deducted — choose wisely and aim high!
               </p>
             </div>
 
@@ -140,21 +144,19 @@ const CertificationsPage: React.FC = () => {
 
   function renderCertCard(cert: typeof CERTIFICATIONS[number]) {
     const status = diplomas[cert.level] || null;
+    const isExpanded = expanded[cert.level] || false;
 
     return (
       <div key={cert.level} className={styles.certCard}>
         <h2>{cert.level}</h2>
         <p><strong>Difficulty:</strong> {cert.difficulty}</p>
         <p><strong>Aura required:</strong> {cert.aura}</p>
-        <p className={styles.description}>{cert.description}</p>
+
+        {isExpanded && <p className={styles.description}>{cert.description}</p>}
 
         <div className={styles.buttons}>
-          <button
-            onClick={() =>
-              alert(`Details for ${cert.level}:\n${cert.description}\nAura: ${cert.aura}`)
-            }
-          >
-            Details
+          <button onClick={() => toggleDetails(cert.level)}>
+            {isExpanded ? "Hide Details" : "Details"}
           </button>
 
           {status === "approved" ? (
