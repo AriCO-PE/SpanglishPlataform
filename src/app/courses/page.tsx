@@ -38,8 +38,8 @@ export default function Resources() {
       title: "Podcasts",
       description: "Learn Spanish by listening to podcasts",
       icon: "🎙️",
-      link: "",
-      soon: true, // Coming soon
+      link: "/podcasts",
+      
     },
     {
       id: 4,
