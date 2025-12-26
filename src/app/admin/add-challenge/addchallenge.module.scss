@@ -106,38 +106,3 @@
   }
 }
 
-/* 📱 Responsive */
-@media (max-width: 820px) {
-  .page {
-    padding: 36px 18px;
-  }
-
-  .card {
-    padding: 22px;
-  }
-}
-
-@media (max-width: 640px) {
-  .row {
-    grid-template-columns: 1fr; /* evita cortes */
-  }
-
-  .messageBanner {
-    font-size: 16px;
-  }
-}
-
-@media (max-width: 420px) {
-  .page {
-    padding: 22px 14px;
-  }
-
-  .card {
-    padding: 18px;
-    border-radius: 14px;
-  }
-
-  .title {
-    font-size: 20px;
-  }
-}
