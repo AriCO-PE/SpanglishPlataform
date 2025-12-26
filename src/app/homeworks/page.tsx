@@ -4,7 +4,7 @@ import { supabase } from "@/lib/supabase";
 import Sidebar from "@/components/Sidebar";
 import PageLayout from "@/components/PageLayout";
 import AuthGuard from "@/components/AuthGuard";
-import styles from "@/app/homeworks/homework.module.scss";
+import styles from "./homework.module.scss";
 
 type Task = {
   id: number;
