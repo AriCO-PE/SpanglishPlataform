@@ -11,7 +11,7 @@ type DiplomaStatus = "pending" | "approved" | "rejected" | null;
 
 type Certification = {
   id: string;
-  name: string;        // Nivel o nombre del diploma
+  name: "A1" | "A2" | "B1" | "B2" | "C1";
   description: string;
   cost: number;
   created_at: string;
@@ -93,30 +93,6 @@ const CertificationsPage: React.FC = () => {
     setExpanded((prev) => ({ ...prev, [id]: !prev[id] }));
   };
 
-  return (
-    <AuthGuard>
-      <PageLayout title="Certifications">
-        <div className="flex min-h-screen">
-          <Sidebar />
-          <main className={styles.container}>
-            <div className={styles.instructions}>
-              <h1>Challenge Yourself and Unlock Your DELE Certification!</h1>
-              <p>
-                Your dedication and hours of study are converted into <strong>Aura</strong>. 
-                Exchange your Aura to request official DELE certifications and show your progress. 
-                Once approved, Aura will be deducted — choose wisely and aim high!
-              </p>
-            </div>
-
-            <div className={styles.certGrid}>
-              {certs.map((cert) => renderCertCard(cert))}
-            </div>
-          </main>
-        </div>
-      </PageLayout>
-    </AuthGuard>
-  );
-
   function renderCertCard(cert: Certification) {
     const status = submissions[cert.id] || null;
     const isExpanded = expanded[cert.id] || false;
@@ -154,6 +130,52 @@ const CertificationsPage: React.FC = () => {
       </div>
     );
   }
+
+  return (
+    <AuthGuard>
+      <PageLayout title="Certifications">
+        <div className="flex min-h-screen">
+          <Sidebar />
+          <main className={styles.container}>
+            <div className={styles.instructions}>
+              <h1>Challenge Yourself and Unlock Your DELE Certification!</h1>
+              <p>
+                Your dedication and hours of study are converted into <strong>Aura</strong>. 
+                Exchange your Aura to request official DELE certifications and show your progress. 
+                Once approved, Aura will be deducted — choose wisely and aim high!
+              </p>
+            </div>
+
+            <div className={styles.certGrid}>
+              {/* Fila 1: A1 y A2 */}
+              <div className={styles.group}>
+                {certs
+                  .filter(c => ["A1","A2"].includes(c.name))
+                  .map(c => renderCertCard(c))
+                }
+              </div>
+
+              {/* Fila 2: B1 y B2 */}
+              <div className={styles.group}>
+                {certs
+                  .filter(c => ["B1","B2"].includes(c.name))
+                  .map(c => renderCertCard(c))
+                }
+              </div>
+
+              {/* Fila 3: C1 */}
+              <div className={`${styles.group} ${styles.single}`}>
+                {certs
+                  .filter(c => c.name === "C1")
+                  .map(c => renderCertCard(c))
+                }
+              </div>
+            </div>
+          </main>
+        </div>
+      </PageLayout>
+    </AuthGuard>
+  );
 };
 
 export default CertificationsPage;
