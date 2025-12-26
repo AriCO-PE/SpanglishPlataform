@@ -1,13 +1,43 @@
-// src/styles/tasks.scss
+/* homework.module.scss */
 
-.tasks-container {
+.container {
   display: flex;
-  flex-direction: column;
-  gap: 1.5rem; // espacio entre tarjetas
-  padding: 2rem;
+  min-height: 100vh;
   background-color: #ffffff;
   color: #111111;
   font-family: "Inter", sans-serif;
+  flex-direction: column;
+
+  @media (min-width: 1024px) {
+    flex-direction: row; // Sidebar + main en desktop
+  }
+}
+
+.main {
+  flex: 1;
+  padding: 2rem;
+}
+
+.title {
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 1.5rem;
+  text-align: center;
+
+  @media (min-width: 768px) {
+    text-align: left;
+  }
+}
+
+.filters {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-bottom: 2rem;
+
+  @media (min-width: 768px) {
+    flex-direction: row;
+  }
 
   input,
   select {
@@ -15,94 +45,105 @@
     padding: 0.6rem 1rem;
     border-radius: 0.5rem;
     font-size: 1rem;
-    transition: border-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
 
     &:focus {
       outline: none;
       border-color: #000;
       box-shadow: 0 0 8px rgba(0, 0, 0, 0.15);
     }
+
+    flex: 1; // para que ocupen todo el espacio disponible
+  }
+}
+
+.tasksList {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.taskCard {
+  background-color: #fff;
+  border: 1px solid #111;
+  border-radius: 1rem;
+  padding: 1.5rem;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+  cursor: default;
+
+  &:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+    background-color: #f9f9f9;
   }
 
-  .filters {
+  .header {
     display: flex;
-    flex-direction: column;
-    gap: 1rem;
-    margin-bottom: 2rem;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.8rem;
 
-    @media (min-width: 768px) {
-      flex-direction: row;
-    }
-  }
-
-  .task-card {
-    background-color: #fff;
-    border: 1px solid #111;
-    border-radius: 1rem;
-    padding: 1.5rem;
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
-    cursor: default;
-
-    &:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.12);
+    h2 {
+      font-size: 1.25rem;
+      font-weight: 600;
+      word-break: break-word;
     }
 
-    .task-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 0.8rem;
-
-      h2 {
-        font-size: 1.25rem;
-        font-weight: 600;
-      }
-
-      .level-badge {
-        font-size: 0.875rem;
-        font-weight: 500;
-        padding: 0.25rem 0.5rem;
-        border-radius: 0.5rem;
-        border: 1px solid #111;
-        transition: background 0.2s ease;
-
-        &:hover {
-          background: #111;
-          color: #fff;
-        }
-      }
-    }
-
-    p.description {
-      font-size: 1rem;
-      line-height: 1.5;
-      margin-bottom: 0.8rem;
-    }
-
-    a.pdf-link {
-      color: #0000ee;
-      text-decoration: underline;
+    .levelBadge {
+      font-size: 0.875rem;
       font-weight: 500;
-      transition: color 0.2s ease;
+      padding: 0.25rem 0.5rem;
+      border-radius: 0.5rem;
+      border: 1px solid #111;
+      transition: background 0.2s ease, color 0.2s ease;
 
       &:hover {
-        color: #111;
+        background: #111;
+        color: #fff;
       }
-    }
-
-    .task-type {
-      font-size: 0.875rem;
-      font-style: italic;
-      color: #555;
-      margin-top: 0.5rem;
     }
   }
 
-  .no-tasks {
-    text-align: center;
+  .description {
     font-size: 1rem;
-    color: #777;
-    margin-top: 2rem;
+    line-height: 1.5;
+    margin-bottom: 0.8rem;
+    word-break: break-word;
+  }
+
+  .pdfLink {
+    color: #0000ee;
+    text-decoration: underline;
+    font-weight: 500;
+    transition: color 0.2s ease;
+
+    &:hover {
+      color: #111;
+    }
+  }
+
+  .type {
+    font-size: 0.875rem;
+    font-style: italic;
+    color: #555;
+    margin-top: 0.5rem;
+  }
+}
+
+.noTasks {
+  text-align: center;
+  font-size: 1rem;
+  color: #777;
+  margin-top: 2rem;
+}
+
+/* Responsive adjustments */
+@media (max-width: 640px) {
+  .filters {
+    flex-direction: column;
+  }
+
+  .taskCard {
+    padding: 1rem;
   }
 }
