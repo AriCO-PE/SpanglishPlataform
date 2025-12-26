@@ -4,7 +4,7 @@ import React, { useEffect, useState } from "react";
 import { supabase } from "@/lib/supabase";
 import PageLayout from "@/components/PageLayout";
 import Sidebar from "@/components/Sidebar";
-import styles from "./certification-requests.module.scss";
+import styles from "./certification.module.scss";
 
 type RequestStatus = "pending" | "approved" | "rejected";
 
