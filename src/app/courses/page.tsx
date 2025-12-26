@@ -46,7 +46,7 @@ export default function Resources() {
       title: "Videos",
       description: "Watch educational Spanish videos ( YOUTUBE )",
       icon: "📺",
-      link: "",
+      link: "/videos",
       
     },
   ];
