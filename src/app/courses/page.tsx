@@ -29,14 +29,14 @@ export default function Resources() {
     {
       id: 2,
       title: "Music",
-      description: "Listen to Spanish playlists",
+      description: "Listen to Spanish playlists ( YANDEX MUSIC )",
       icon: "🎵",
       link: "/music", // Internal page
     },
     {
       id: 3,
       title: "Podcasts",
-      description: "Learn Spanish by listening to podcasts",
+      description: "Learn Spanish by listening to podcasts ( YOUTUBE )",
       icon: "🎙️",
       link: "/podcasts",
       
@@ -44,10 +44,10 @@ export default function Resources() {
     {
       id: 4,
       title: "Videos",
-      description: "Watch educational Spanish videos",
+      description: "Watch educational Spanish videos ( YOUTUBE )",
       icon: "📺",
       link: "",
-      soon: true, // Coming soon
+      
     },
   ];
 

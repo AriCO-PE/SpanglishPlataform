@@ -6,14 +6,6 @@ import PageLayout from "@/components/PageLayout";
 import styles from "./podcasts.module.scss";
 
 const podcasts = [
-  {
-    id: "1",
-    title: "The SPANISH PODCAST",
-    genre: "Basic Spanish",
-    description: "Learn Spanish with simple and fun episodes",
-    cover_url: "https://i.pinimg.com/736x/b8/01/67/b80167951a4eda381c6dd42300694af3.jpg",
-    link: "https://www.youtube.com/watch?v=6NLoldPimHE",
-  },
   
   
   {
@@ -76,6 +68,15 @@ const podcasts = [
     description: "Master advanced Spanish with in-depth discussions and analyses",
     cover_url: "https://i.pinimg.com/736x/de/45/f4/de45f4640e8791f38b38b629c26ef788.jpg",
     link: "https://www.youtube.com/watch?v=RbjAvAfGYjc&list=PLgvdQwYpumW3L4L1EeqxakBKLswdBJqLh",
+  },
+
+  {
+    id: "7",
+    title: "The SPANISH PODCAST",
+    genre: "Basic Spanish",
+    description: "Learn Spanish with simple and fun episodes",
+    cover_url: "https://i.pinimg.com/736x/b8/01/67/b80167951a4eda381c6dd42300694af3.jpg",
+    link: "https://www.youtube.com/watch?v=6NLoldPimHE",
   },
 
 ];
