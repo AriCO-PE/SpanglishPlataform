@@ -4,7 +4,7 @@ import { supabase } from "@/lib/supabase";
 import Sidebar from "@/components/Sidebar";
 import PageLayout from "@/components/PageLayout";
 import AuthGuard from "@/components/AuthGuard";
-import styles from "./homeworks.module.scss";
+import styles from "@/app/homeworks/homework.module.scss";
 
 type Task = {
   id: number;
@@ -14,7 +14,7 @@ type Task = {
   pdf_url?: string;
   type: "Redactar" | "Exponer" | "Comprender";
   created_at: string;
-  created_by: string;
+  created_by: string | null;
 };
 
 const TasksPage: React.FC = () => {
@@ -34,7 +34,6 @@ const TasksPage: React.FC = () => {
       }
       setLoading(false);
     };
-
     fetchTasks();
   }, []);
 
@@ -51,28 +50,23 @@ const TasksPage: React.FC = () => {
   return (
     <AuthGuard>
       <PageLayout title="Lista de Tareas">
-        <div className="flex min-h-screen bg-white text-black">
+        <div className={styles.container}>
           <Sidebar />
 
-          <main className="flex-1 p-8">
-            <h1 className="text-3xl font-bold mb-6">Lista de Tareas</h1>
+          <main className={styles.main}>
+            <h1 className={styles.title}>Lista de Tareas</h1>
 
             {/* Filtros */}
-            <div className="flex flex-col md:flex-row gap-4 mb-6">
+            <div className={styles.filters}>
               <input
                 type="text"
                 placeholder="Buscar por título o descripción..."
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
-                className="border border-black p-2 rounded flex-1"
               />
-
               <select
                 value={levelFilter}
-                onChange={(e) =>
-                  setLevelFilter(e.target.value as Task["level"])
-                }
-                className="border border-black p-2 rounded"
+                onChange={(e) => setLevelFilter(e.target.value as Task["level"])}
               >
                 <option value="">Todos los niveles</option>
                 {["A1","A2","B1","B2","C1","C2"].map((lvl) => (
@@ -82,39 +76,34 @@ const TasksPage: React.FC = () => {
             </div>
 
             {/* Lista de tareas */}
-            {loading ? (
-              <p>Cargando tareas...</p>
-            ) : (
-              <div className="grid gap-6">
-                {filteredTasks.length > 0 ? (
-                  filteredTasks.map((task) => (
-                    <div
-                      key={task.id}
-                      className="border border-black p-4 rounded shadow-sm hover:shadow-md transition-shadow"
-                    >
-                      <div className="flex justify-between items-center mb-2">
-                        <h2 className="text-xl font-semibold">{task.title}</h2>
-                        <span className="text-sm font-medium">{task.level}</span>
-                      </div>
-                      <p className="mb-2">{task.description}</p>
-                      {task.pdf_url && (
-                        <a
-                          href={task.pdf_url}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="text-blue-600 underline"
-                        >
-                          Ver PDF
-                        </a>
-                      )}
-                      <div className="mt-2 text-sm italic text-gray-600">{task.type}</div>
+            <div className={styles.tasksList}>
+              {loading ? (
+                <p>Cargando tareas...</p>
+              ) : filteredTasks.length === 0 ? (
+                <p className={styles.noTasks}>No se encontraron tareas.</p>
+              ) : (
+                filteredTasks.map((task) => (
+                  <div key={task.id} className={styles.taskCard}>
+                    <div className={styles.header}>
+                      <h2>{task.title}</h2>
+                      <span className={styles.levelBadge}>{task.level}</span>
                     </div>
-                  ))
-                ) : (
-                  <p className="text-gray-500 text-center">No se encontraron tareas.</p>
-                )}
-              </div>
-            )}
+                    <p className={styles.description}>{task.description}</p>
+                    {task.pdf_url && (
+                      <a
+                        className={styles.pdfLink}
+                        href={task.pdf_url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        Ver PDF
+                      </a>
+                    )}
+                    <div className={styles.type}>{task.type}</div>
+                  </div>
+                ))
+              )}
+            </div>
           </main>
         </div>
       </PageLayout>
