@@ -14,31 +14,70 @@ const podcasts = [
     cover_url: "https://i.pinimg.com/736x/b8/01/67/b80167951a4eda381c6dd42300694af3.jpg",
     link: "https://www.youtube.com/watch?v=6NLoldPimHE",
   },
+  
+  
   {
     id: "2",
-    title: "Salsa Talk",
-    genre: "Music & Culture",
-    description: "Interviews and stories about salsa music",
-    cover_url: "https://i.pinimg.com/736x/5f/8a/61/5f8a6172f3e28d73a3f6c44f8e4e2f50.jpg",
-    link: "https://podcasts.yandex.com/podcast/salsatalk",
-  },
+    title: "Spanish A1",
+    genre: "Spanish Learning",
+    description: "Start your Spanish journey with beginner-friendly episodes",
+    cover_url: "https://i.pinimg.com/736x/2f/61/31/2f613117de5788d08bbaa5cff1bd2dab.jpg",
+    link: "https://www.youtube.com/watch?v=dei43uUm2U4&list=PLFJ3s0TdpDoyQcmXlyDKSeLQRGibPes6o",
+
+},
+
+  
+  
   {
     id: "3",
-    title: "Tech en Español",
-    genre: "Technology",
-    description: "Latest tech news and reviews in Spanish",
-    cover_url: "https://i.pinimg.com/736x/4b/29/7e/4b297e98d08c5f0f9d6a0f7b5e6a0d5e.jpg",
-    link: "https://podcasts.yandex.com/podcast/techenespanol",
+    title: "Spanish A2",
+    genre: "Spanish Learning",
+    description: "Improve your Spanish skills with engaging content",
+    cover_url: "https://i.pinimg.com/736x/f3/80/9b/f3809b1fb10eddcdab741f7eebdd2d08.jpg",
+    link: "https://www.youtube.com/watch?v=j8FTGGT_gbI&list=PLOfKr-QFX3fAkPdiI3xZVoh1fzXU2EVtB",
   },
+  
+  
   {
     id: "4",
-    title: "Cultura Pop Latina",
-    genre: "Pop Culture",
-    description: "Discussions on movies, music, and trends",
-    cover_url: "https://i.pinimg.com/736x/7a/6b/23/7a6b23d8f0b89f04b9c0a3f8a1e2b1f4.jpg",
-    link: "https://podcasts.yandex.com/podcast/culturapoplatina",
+    title: "Spanish B1",
+    genre: "Spanish Learning",
+    description: "Take your Spanish to the next level with intermediate lessons",
+    cover_url: "https://i.pinimg.com/1200x/6d/7f/72/6d7f72dc3b314ea337807512a793dabe.jpg",
+    link: "https://www.youtube.com/watch?v=DlmhBfiEtkE&list=PLOfKr-QFX3fDL4Fj6aR6B0XgHU8VNrSqd",
   },
-  // Puedes agregar más podcasts aquí
+ 
+
+  
+  {
+    id: "5",
+    title: "Spanish B2",
+    genre: "Spanish Learning",
+    description: "Advance your Spanish with challenging topics and discussions",
+    cover_url: "https://i.pinimg.com/736x/f7/f0/90/f7f0908cfdccd328a246cd578b7efec8.jpg",
+    link: "https://www.youtube.com/watch?v=hC-zjqsDYcE&list=PLQGxDRfENoxKLudehx1KMcdzBm_QEHKyM",
+  },
+
+
+ {
+    id: "6",
+    title: "Spanish C1",
+    genre: "Spanish Learning",
+    description: "Master advanced Spanish with in-depth discussions and analyses",
+    cover_url: "https://i.pinimg.com/736x/a1/e1/2a/a1e12a446abe05cbcbbb8e6753f61602.jpg",
+    link: "https://www.youtube.com/watch?v=AAb2A3J9H6k",
+  },
+
+
+   {
+    id: "6",
+    title: "Spanish C2",
+    genre: "Spanish Learning",
+    description: "Master advanced Spanish with in-depth discussions and analyses",
+    cover_url: "https://i.pinimg.com/736x/de/45/f4/de45f4640e8791f38b38b629c26ef788.jpg",
+    link: "https://www.youtube.com/watch?v=RbjAvAfGYjc&list=PLgvdQwYpumW3L4L1EeqxakBKLswdBJqLh",
+  },
+
 ];
 
 export default function PodcastsPage() {
