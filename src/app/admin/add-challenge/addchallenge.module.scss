@@ -1,14 +1,13 @@
 .page {
   min-height: 100vh;
-  background-color: #f3f0ea; /* 🎨 color hueso */
-  color: #111;
+  background-color: #fff; /* fondo blanco */
+  color: #111; /* texto negro */
   display: flex;
   justify-content: center;
   align-items: flex-start;
   padding: 48px 20px;
   font-family: "Inter", system-ui, sans-serif;
 
-  /* Reset interno solo dentro de la página */
   & *,
   & *::before,
   & *::after {
@@ -18,23 +17,33 @@
   }
 }
 
-/* Banner de mensajes */
+/* Banner de mensaje elegante */
 .messageBanner {
   max-width: 760px;
   width: 100%;
   text-align: center;
-  background-color: #ffffff;
-  border: 1px solid #dfdfdf;
-  padding: 20px;
+  background-color: #111; /* fondo negro */
+  color: #fff; /* texto blanco */
+  font-weight: 500;
+  font-size: 20px;
+  line-height: 1.6;
+  padding: 24px 28px;
   border-radius: 16px;
-  font-size: 18px;
-  line-height: 1.7;
   margin: 0 auto 32px auto;
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.05);
-  transition: transform 0.2s;
+  box-shadow: 0 12px 35px rgba(0, 0, 0, 0.18);
+  border: 1px solid #333;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
 
   &:hover {
-    transform: translateY(-2px);
+    transform: translateY(-3px);
+    box-shadow: 0 18px 50px rgba(0, 0, 0, 0.22);
+  }
+
+  h2 {
+    font-family: "Playfair Display", serif;
+    font-size: 24px;
+    font-weight: 600;
+    margin: 0;
   }
 }
 
@@ -42,23 +51,24 @@
 .card {
   max-width: 760px;
   width: 100%;
-  background-color: #ffffff;
-  border: 1px solid #dfdfdf;
+  background-color: #fff;
+  border: 1px solid #111; /* borde negro */
   border-radius: 20px;
-  padding: 32px 28px;
+  padding: 36px 32px;
   box-shadow: 0 20px 50px rgba(0, 0, 0, 0.08);
   transition: all 0.2s ease-in-out;
+  margin: 0 auto;
 
   &:hover {
-    box-shadow: 0 25px 60px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 25px 60px rgba(0, 0, 0, 0.12);
   }
 }
 
 /* Títulos */
 .title {
-  font-size: 26px;
+  font-size: 28px;
   font-weight: 600;
-  margin-bottom: 20px;
+  margin-bottom: 24px;
   color: #111;
   text-align: center;
 }
@@ -67,22 +77,23 @@
 .form {
   display: flex;
   flex-direction: column;
-  gap: 18px;
+  gap: 20px;
 
   .field {
     display: flex;
     flex-direction: column;
-    gap: 6px;
+    gap: 8px;
 
     label {
       font-size: 14px;
-      color: #555;
+      color: #111;
+      font-weight: 500;
     }
 
     input,
     textarea {
-      background-color: #fafafa;
-      border: 1px solid #d6d6d6;
+      background-color: #fff;
+      border: 1px solid #111;
       color: #111;
       padding: 14px;
       border-radius: 12px;
@@ -92,7 +103,7 @@
 
       &:focus {
         border: 1px solid #000;
-        box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.06);
+        box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.08);
       }
     }
 
@@ -103,7 +114,7 @@
   }
 }
 
-/* Grid responsive */
+/* Grid para puntos y horas */
 .row {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
@@ -112,9 +123,9 @@
 
 /* Botón principal */
 .button {
-  margin-top: 10px;
-  background-color: #000;
-  color: #fff;
+  margin-top: 12px;
+  background-color: #111; /* negro */
+  color: #fff; /* blanco */
   border: none;
   padding: 14px 0;
   border-radius: 14px;
@@ -122,7 +133,7 @@
   font-size: 15px;
   cursor: pointer;
   text-align: center;
-  transition: all 0.2s ease-in-out;
+  transition: all 0.25s ease-in-out;
 
   &:hover {
     transform: translateY(-2px);

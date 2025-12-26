@@ -2,6 +2,9 @@
 
 import { useState } from "react";
 import { challengesService } from "@/services/challengesService";
+import PageLayout from "@/components/PageLayout";
+import AuthGuard from "@/components/AuthGuard";
+import Sidebar from "@/components/Sidebar";
 import styles from "./addchallenge.module.scss";
 
 export default function AddChallengePage() {
@@ -27,7 +30,7 @@ export default function AddChallengePage() {
         summary: form.summary,
         points: Number(form.points),
         hours: Number(form.hours),
-        description: form.description ||  undefined,
+        description: form.description || undefined,
       });
 
       alert("🎉 Challenge added successfully!");
@@ -46,77 +49,84 @@ export default function AddChallengePage() {
   };
 
   return (
-    <div className={styles.page}>
-      <div className={styles.messageBanner}>
-        أنتِ أجمل امرأة في العالم، نقية ووفية. أنا محظوظٌ جدًا برؤيتكِ. إذا رغبتِ في الراحة، فخذي وقتكِ يا حبيبتي.
-      </div>
-
-      <div className={styles.card}>
-        <h1 className={styles.title}>Add Challenge</h1>
-
-        <form className={styles.form} onSubmit={handleSubmit}>
-          <div className={styles.field}>
-            <label>Title</label>
-            <input
-              name="title"
-              type="text"
-              placeholder="Challenge title"
-              value={form.title}
-              onChange={handleChange}
-              required
-            />
-          </div>
-
-          <div className={styles.field}>
-            <label>Summary</label>
-            <textarea
-              name="summary"
-              placeholder="Short summary..."
-              value={form.summary}
-              onChange={handleChange}
-              required
-            />
-          </div>
-
-          <div className={styles.row}>
-            <div className={styles.field}>
-              <label>Points</label>
-              <input
-                name="points"
-                type="number"
-                placeholder="0"
-                value={form.points}
-                onChange={handleChange}
-                required
-              />
+    <AuthGuard>
+      <PageLayout title="Add Challenge">
+        <div className="flex min-h-screen">
+          <Sidebar />
+          <main className={styles.page}>
+            <div className={styles.messageBanner}>
+              أنتِ أجمل امرأة في العالم، نقية ووفية. أنا محظوظٌ جدًا برؤيتكِ. إذا رغبتِ في الراحة، فخذي وقتكِ يا حبيبتي.
             </div>
 
-            <div className={styles.field}>
-              <label>Hours</label>
-              <input
-                name="hours"
-                type="number"
-                placeholder="0"
-                value={form.hours}
-                onChange={handleChange}
-                required
-              />
+            <div className={styles.card}>
+              <h1 className={styles.title}>Add Challenge</h1>
+
+              <form className={styles.form} onSubmit={handleSubmit}>
+                <div className={styles.field}>
+                  <label>Title</label>
+                  <input
+                    name="title"
+                    type="text"
+                    placeholder="Challenge title"
+                    value={form.title}
+                    onChange={handleChange}
+                    required
+                  />
+                </div>
+
+                <div className={styles.field}>
+                  <label>Summary</label>
+                  <textarea
+                    name="summary"
+                    placeholder="Short summary..."
+                    value={form.summary}
+                    onChange={handleChange}
+                    required
+                  />
+                </div>
+
+                <div className={styles.row}>
+                  <div className={styles.field}>
+                    <label>Points</label>
+                    <input
+                      name="points"
+                      type="number"
+                      placeholder="0"
+                      value={form.points}
+                      onChange={handleChange}
+                      required
+                    />
+                  </div>
+
+                  <div className={styles.field}>
+                    <label>Hours</label>
+                    <input
+                      name="hours"
+                      type="number"
+                      placeholder="0"
+                      value={form.hours}
+                      onChange={handleChange}
+                      required
+                    />
+                  </div>
+                </div>
+
+                <div className={styles.field}>
+                  <label>Description (optional)</label>
+                  <textarea
+                    name="description"
+                    placeholder="Description..."
+                    value={form.description}
+                    onChange={handleChange}
+                  />
+                </div>
+
+                <button className={styles.button}>Save Challenge</button>
+              </form>
             </div>
-          </div>
-
-          <div className={styles.field}>
-            <label>Description (optional)</label>
-            <textarea
-              name="description"
-              placeholder="Description..."
-              value={form.description}
-              onChange={handleChange}
-            />
-          </div>
-
-          <button className={styles.button}>Save Challenge</button>
-        </form>
-      </div>
-    </div>
+          </main>
+        </div>
+      </PageLayout>
+    </AuthGuard>
   );
 }
