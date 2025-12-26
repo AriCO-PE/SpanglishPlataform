@@ -8,11 +8,11 @@ import styles from "./podcasts.module.scss";
 const podcasts = [
   {
     id: "1",
-    title: "Historias Latinas",
-    genre: "Storytelling",
-    description: "Discover amazing stories from Latin America",
-    cover_url: "https://i.pinimg.com/736x/8a/3d/2f/8a3d2f1b42d9d6bfb9b4a0985f2d4b07.jpg",
-    link: "https://podcasts.yandex.com/podcast/latinohistories",
+    title: "The SPANISH PODCAST",
+    genre: "Basic Spanish",
+    description: "Learn Spanish with simple and fun episodes",
+    cover_url: "https://i.pinimg.com/736x/b8/01/67/b80167951a4eda381c6dd42300694af3.jpg",
+    link: "https://www.youtube.com/watch?v=6NLoldPimHE",
   },
   {
     id: "2",
