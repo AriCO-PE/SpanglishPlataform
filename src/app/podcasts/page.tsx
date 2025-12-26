@@ -9,7 +9,7 @@ const podcasts = [
   
   
   {
-    id: "2",
+    id: "1",
     title: "Spanish A1",
     genre: "Spanish Learning",
     description: "Start your Spanish journey with beginner-friendly episodes",
@@ -21,7 +21,7 @@ const podcasts = [
   
   
   {
-    id: "3",
+    id: "2",
     title: "Spanish A2",
     genre: "Spanish Learning",
     description: "Improve your Spanish skills with engaging content",
@@ -31,7 +31,7 @@ const podcasts = [
   
   
   {
-    id: "4",
+    id: "3",
     title: "Spanish B1",
     genre: "Spanish Learning",
     description: "Take your Spanish to the next level with intermediate lessons",
@@ -42,7 +42,7 @@ const podcasts = [
 
   
   {
-    id: "5",
+    id: "4",
     title: "Spanish B2",
     genre: "Spanish Learning",
     description: "Advance your Spanish with challenging topics and discussions",
@@ -52,7 +52,7 @@ const podcasts = [
 
 
  {
-    id: "6",
+    id: "5",
     title: "Spanish C1",
     genre: "Spanish Learning",
     description: "Master advanced Spanish with in-depth discussions and analyses",
