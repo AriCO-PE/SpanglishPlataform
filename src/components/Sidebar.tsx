@@ -40,6 +40,8 @@ const SidebarContent = () => {
     { name: "Material", href: "/courses", icon: "📚" },
     { name: "Ranking", href: "/ranking", icon: "🏆" },
     { name: "Challenges", href: "/grades", icon: "🎯" },
+    { name: "Homeworks", href: "/homeworks", icon: "📝" },
+    { name: "Certifications", href: "/certifications", icon: "📜" },
   ];
 
   // 🔹 Menú de administración (solo para admins)
