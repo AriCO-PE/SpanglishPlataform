@@ -3,8 +3,8 @@
   background-color: #fff; /* fondo blanco */
   color: #111; /* texto negro */
   display: flex;
-  justify-content: center;
-  align-items: flex-start;
+  flex-direction: column; /* <-- cambia a columna */
+  align-items: center; /* centra horizontalmente */
   padding: 48px 20px;
   font-family: "Inter", system-ui, sans-serif;
 
