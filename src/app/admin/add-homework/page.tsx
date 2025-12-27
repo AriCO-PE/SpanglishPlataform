@@ -71,7 +71,7 @@ const AddHomeworkPage: React.FC = () => {
                 أنت أفضل شيء حدث لي على الإطلاق.
               </div>
 
-              <h1 className={styles.title}>Añadir Homework</h1>
+              <h1 className={styles.title}>Add Homework</h1>
 
               <select name="level" value={form.level} onChange={handleChange}>
                 {["A1","A2","B1","B2","C1","C2"].map((lvl) => (
